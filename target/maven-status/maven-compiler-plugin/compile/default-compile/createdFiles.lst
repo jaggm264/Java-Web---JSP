@@ -1,0 +1,12 @@
+Modelo\NivelDeCompetenciaSugerencia.class
+Modelo\RegistroDeUso.class
+Modelo\Reporte.class
+Modelo\Usuario.class
+com\mycompany\web\trackeredu\resources\JakartaEE10Resource.class
+Modelo\Evidencia.class
+Modelo\Grupo.class
+com\mycompany\web\trackeredu\JakartaRestConfiguration.class
+Modelo\Estudiante.class
+Modelo\HerramientaAI.class
+Modelo\Admin.class
+Modelo\Docente.class
