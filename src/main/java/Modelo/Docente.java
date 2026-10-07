@@ -4,33 +4,16 @@
  */
 package Modelo;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author bbsot
  */
-public class Docente extends Usuario{
-    
-    int idDocente = 0;
+public class Docente extends Usuario {
 
-    public static ArrayList<Docente> listaDocentes = crearListaInicial();
-
-    public static int contadorIdDocente = 1;
-
-    public static Docente docenteActual = null;
-
-    private static ArrayList<Docente> crearListaInicial() {
-        ArrayList<Docente> lista = new ArrayList<>();
-        Docente docentePrueba = new Docente(1, "Docente Prueba", "docente@correo.edu.co", "Profesor", 1);
-        docentePrueba.setContraseña("1234");
-        docentePrueba.setDocumento("1000");
-        lista.add(docentePrueba);
-        return lista;
-    }
+    private int idDocente = 0;
 
     public Docente() {
-        
+        super();
     }
 
     public Docente(int idUsuario, String nombre, String correo, String rol, int idDocente) {
@@ -48,8 +31,6 @@ public class Docente extends Usuario{
 
     @Override
     public String MostrarInformacion() {
-        return "Informacion de Docente: " + this.getNombre()+ "con Identificacion: " + this.getIdDocente();
+        return "Información de Docente: " + this.getNombre() + " | ID Docente: " + this.getIdDocente();
     }
-    
 }
-

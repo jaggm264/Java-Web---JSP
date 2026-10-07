@@ -2,31 +2,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo;
 
-import java.util.ArrayList;
+package Modelo;
 
 /**
  *
  * @author bbsot
  */
 public class Reporte {
-    int idReporte = 0;
-    int numeroDeReportes = 0;
-    String contenido = "";
-    String nombreReporte = "";
 
-    public static Reporte ultimoReporte = null;
-    public static int totalReportesGenerados = 0;
-
-    public static ArrayList<Reporte> listaReportes = new ArrayList<>();
+    private int idReporte = 0;
+    private int numeroDeReportes = 0;
+    private String nombreReporte = "";
+    private String contenido = "";
 
     public Reporte() {
     }
-    
-    public Reporte (int idReporte, int numeroDeReportes){
+
+    public Reporte(int idReporte, String nombreReporte, String contenido) {
         this.idReporte = idReporte;
-        this.numeroDeReportes = numeroDeReportes;
+        this.nombreReporte = nombreReporte;
+        this.contenido = contenido;
+        this.numeroDeReportes = idReporte;
     }
 
     public int getIdReporte() {
@@ -45,14 +42,6 @@ public class Reporte {
         this.numeroDeReportes = numeroDeReportes;
     }
 
-    public String getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
-    }
-
     public String getNombreReporte() {
         return nombreReporte;
     }
@@ -60,5 +49,12 @@ public class Reporte {
     public void setNombreReporte(String nombreReporte) {
         this.nombreReporte = nombreReporte;
     }
-    
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
 }

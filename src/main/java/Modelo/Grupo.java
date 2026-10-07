@@ -4,29 +4,24 @@
  */
 package Modelo;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author bbsot
  */
 public class Grupo {
-    
-    int idGrupo = 0;
-    String nombreGrupo = "";
-    String integrante1 = "";
-    String integrante2 = "";
-    String integrante3 = "";
-    String integrante4 = "";
-    String nombreDocente = "";
 
-    public static ArrayList<Grupo> listaGrupos = new ArrayList<>();
-
-    public static int contadorIdGrupo = 0;
+    private int idGrupo = 0;
+    private String nombreGrupo = "";
+    private String integrante1 = "";
+    private String integrante2 = "";
+    private String integrante3 = "";
+    private String integrante4 = "";
+    private String nombreDocente = "";
 
     public Grupo() {
     }
-    public Grupo(int idGrupo, String nombreGrupo){
+
+    public Grupo(int idGrupo, String nombreGrupo) {
         this.idGrupo = idGrupo;
         this.nombreGrupo = nombreGrupo;
     }
@@ -93,5 +88,4 @@ public class Grupo {
                 || integrante3.equalsIgnoreCase(nombreEstudiante)
                 || integrante4.equalsIgnoreCase(nombreEstudiante);
     }
-    
 }

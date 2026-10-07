@@ -4,34 +4,17 @@
  */
 package Modelo;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author bbsot
  */
-public class Estudiante extends Usuario{
-    int idEstudiante = 0;
+public class Estudiante extends Usuario {
 
-    public static ArrayList<Estudiante> listaEstudiantes = crearListaInicial();
+    private int idEstudiante = 0;
 
-    public static int contadorIdEstudiante = 1;
-
-    public static Estudiante estudianteActual = null;
-
-    public static String[] nombresIA = {"Gemini", "ChatGPT", "Claude", "Deepseek"};
-
-    public static int[] usosIA = new int[4];
-
-    private static ArrayList<Estudiante> crearListaInicial() {
-        ArrayList<Estudiante> lista = new ArrayList<>();
-        Estudiante estudiantePrueba = new Estudiante(1, "Estudiante Prueba", "estudiante@correo.edu.co", "Estudiante", 1);
-        estudiantePrueba.setContraseña("1234");
-        estudiantePrueba.setDocumento("2000");
-        lista.add(estudiantePrueba);
-        return lista;
+    public Estudiante() {
+        super();
     }
-
 
     public Estudiante(int idUsuario, String nombre, String correo, String rol, int idEstudiante) {
         super(idUsuario, nombre, correo, rol);
@@ -48,7 +31,6 @@ public class Estudiante extends Usuario{
 
     @Override
     public String MostrarInformacion() {
-        return "Informacion de Estudiante: " + this.getNombre()+ "con Identificacion: " + this.getIdEstudiante();
+        return "Información de Estudiante: " + this.getNombre() + " | ID Estudiante: " + this.getIdEstudiante();
     }
-    
 }

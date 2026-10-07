@@ -7,13 +7,14 @@
 
             <h1 class="text-center fw-bold mb-3">REGISTRO DE USUARIO</h1>
 
-            <form action="login.jsp" method="GET">
+            <form action="login.jsp" action="servletUsuarios.java" method="POST">
 
                 <div class="form-floating mb-3">
                     <input 
                         type="text" 
                         class="form-control" 
                         id="floatingName" 
+                        value="nombreRegistro"
                         placeholder="Anon">
                     <label for="floatingName">Nombre</label>
                 </div>
@@ -23,6 +24,7 @@
                         type="email" 
                         class="form-control" 
                         id="floatingEmail" 
+                        value="correoInstitucional"
                         placeholder="example@gmail.com">
                     <label for="floatingEmail">Correo Institucional</label>
                 </div>
@@ -32,6 +34,7 @@
                         type="text" 
                         class="form-control" 
                         id="floatingIdentificationDocument" 
+                        value="documentoIdentificacion"
                         placeholder="123456789">
                     <label for="floatingIdentificationDocument">Documento de identificación</label>
                 </div>
