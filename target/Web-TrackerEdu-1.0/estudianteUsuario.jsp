@@ -2,52 +2,103 @@
 
 <div class="container my-5">
 
+    <!-- Encabezado -->
     <div class="text-center mb-5">
         <h1 class="fw-bold">Bienvenid@ estudiante</h1>
         <p class="fs-5 text-secondary">Querido estudiante, pertenece al grupo:</p>
+        <h5 class="fw-bold text-secondary mt-3">IAs para guiar tu método de estudio</h5>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm p-4">
+    <div class="row g-4 justify-content-center mb-5">
+
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center bg-white d-flex flex-column align-items-center justify-content-between">
+                <div class="w-100">
+                    <img src="imagenes/ChatGPT-Logo.svg.png" alt="ChatGPT" class="img-fluid mb-3" width="60" height="60">
+                    <h5 class="fw-bold text-dark">ChatGPT</h5>
+                </div>
                 
-                <h5 class="fw-bold text-center mb-4 text-secondary">IAs para guiar tu metodo de estudio</h5>
-
-                <div class="d-flex flex-column gap-3 align-items-center my-3">
-
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <span class="fw-bold fs-5">Gemini:</span>
-                        <a href="#" class="btn btn-dark text-warning fw-bold px-4">USAR</a>
+                <div class="w-100 mt-2">
+                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChatGPT" aria-expanded="false" aria-controls="collapseChatGPT">
+                        Ver información
+                    </button>
+                    
+                    <div class="collapse" id="collapseChatGPT">
+                        <p class="small text-muted mb-3">Excelente para redacción, generación de ideas, estructuración de textos y explicación paso a paso de conceptos.</p>
+                        <a href="https://chatgpt.com" target="_blank" class="btn btn-dark text-warning fw-bold w-100 rounded-3">USAR</a>
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <span class="fw-bold fs-5">ChatGPT:</span>
-                        <a href="#" class="btn btn-dark text-warning fw-bold px-4">USAR</a>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <span class="fw-bold fs-5">Claude:</span>
-                        <a href="#" class="btn btn-dark text-warning fw-bold px-4">USAR</a>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center w-75">
-                        <span class="fw-bold fs-5">Deepseek:</span>
-                        <a href="#" class="btn btn-dark text-warning fw-bold px-4">USAR</a>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div>
-        <p class="text-center fw-bold fs-5 mb-0 text-dark mt-3">Recuerda usar las IAs de manera adecuada!</p>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center bg-white d-flex flex-column align-items-center justify-content-between">
+                <div class="w-100">
+                    <img src="imagenes/gemini-icon.png" alt="Gemini" class="img-fluid mb-3" width="60" height="60">
+                    <h5 class="fw-bold text-dark">Gemini</h5>
+                </div>
+                
+                <div class="w-100 mt-2">
+                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGemini" aria-expanded="false" aria-controls="collapseGemini">
+                        Ver información
+                    </button>
+                    
+                    <div class="collapse" id="collapseGemini">
+                        <p class="small text-muted mb-3">Ideal para búsquedas en tiempo real, análisis de imágenes y conexión directa con el ecosistema de Google.</p>
+                        <a href="https://gemini.google.com" target="_blank" class="btn btn-dark text-warning fw-bold w-100 rounded-3">USAR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center bg-white d-flex flex-column align-items-center justify-content-between">
+                <div class="w-100">
+                    <img src="imagenes/free-deepseek-icon-svg-download-png-.png" alt="DeepSeek" class="img-fluid mb-3" width="60" height="60">
+                    <h5 class="fw-bold text-dark">DeepSeek</h5>
+                </div>
+                
+                <div class="w-100 mt-2">
+                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeepSeek" aria-expanded="false" aria-controls="collapseDeepSeek">
+                        Ver información
+                    </button>
+                    
+                    <div class="collapse" id="collapseDeepSeek">
+                        <p class="small text-muted mb-3">Potente en razonamiento lógico avanzado, resolución de matemáticas y optimización de código de programación.</p>
+                        <a href="https://chat.deepseek.com" target="_blank" class="btn btn-dark text-warning fw-bold w-100 rounded-3">USAR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 text-center bg-white d-flex flex-column align-items-center justify-content-between">
+                <div class="w-100">
+                    <img src="imagenes/notebooklm-icon.png" alt="NotebookLM" class="img-fluid mb-3" width="60" height="60">
+                    <h5 class="fw-bold text-dark">NotebookLM</h5>
+                </div>
+                
+                <div class="w-100 mt-2">
+                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNotebook" aria-expanded="false" aria-controls="collapseNotebook">
+                        Ver información
+                    </button>
+                    
+                    <div class="collapse" id="collapseNotebook">
+                        <p class="small text-muted mb-3">Interactúa directamente con tus propios documentos, PDFs y notas de estudio sin riesgo de alucinaciones.</p>
+                        <a href="https://notebooklm.google.com" target="_blank" class="btn btn-dark text-warning fw-bold w-100 rounded-3">USAR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mt-5">
-        <div>
-            <a href="login.jsp" class="btn btn-outline-danger fw-bold px-4">SALIR</a>
-        </div>
+    <div>
+        <p class="text-center fw-bold fs-5 mb-0 text-dark">Recuerda usar las IAs de manera adecuada!</p>
+    </div>
+
+    <div class="d-flex justify-content-start align-items-center mt-4">
+        <a href="login.jsp" class="btn btn-outline-danger fw-bold px-4 rounded-pill">SALIR</a>
     </div>
 
 </div>

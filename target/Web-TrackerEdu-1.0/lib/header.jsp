@@ -5,7 +5,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>TrackerEDU</title>
     <div class="text-left" style="background-color: #fcfcfc;">
-        <img src="./imagenes/TrackerEduIA.png"  alt="Banner de TrackerEduIA" style="width: 150px; height: auto;">
+        <a class="navbar-brand" href="index.jsp">
+        <img src="./imagenes/TrackerEduIA.png" alt="Logo TrackerEdu" style="width: 150px; height: auto;" class="d-inline-block align-text-top"></a>
     </div>
     
         <link href="./styles/style.css" rel="stylesheet" type ="text/css">
