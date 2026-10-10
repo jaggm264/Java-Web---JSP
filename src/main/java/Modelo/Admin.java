@@ -33,7 +33,6 @@ public class Admin extends Usuario {
         return "Administrador: " + this.getNombre() + " | Correo: " + this.getCorreo();
     }
 
-    // Delegación hacia gestores
     public void crearGrupo(String nombreGrupo) {
         gestorGrupos.crearGrupo(nombreGrupo);
     }

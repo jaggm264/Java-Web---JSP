@@ -17,15 +17,14 @@ public abstract class Usuario {
     private String contraseña = "";
     private String documento = "";
     
-    public Usuario(){
-          
-    }
-    
     public Usuario(int idUsuario, String nombre, String correo, String rol){
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
         this.rol = rol;
+    }
+    public Usuario() {
+    
     }
     public void setIdUsuario(int idUsuario){
         this.idUsuario = idUsuario;

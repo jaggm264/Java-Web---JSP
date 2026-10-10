@@ -1,4 +1,4 @@
-<%@include file="lib/header2.jsp" %>
+<%@include file="lib/header_index.jsp"%>
 
     <main class="container mb-5">
         <div class="text-center mb-5">

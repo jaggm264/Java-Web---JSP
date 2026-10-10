@@ -11,6 +11,7 @@ package Modelo;
 public class Estudiante extends Usuario {
 
     private int idEstudiante = 0;
+    
 
     public Estudiante() {
         super();
