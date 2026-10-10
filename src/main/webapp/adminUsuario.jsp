@@ -55,7 +55,7 @@
                         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
                             <h5 class="mb-0 fw-bold">Listado de reportes</h5>
                             <div>
-                                <a href="nuevoReporte.jsp" class="btn btn-danger btn-sm rounded-pill px-3 text-decoration-none">
+                                <a href="registroReporte.jsp" class="btn btn-danger btn-sm rounded-pill px-3 text-decoration-none">
                                     <i class="bi bi-plus-lg me-1"></i>Nuevo reporte
                                 </a>
                             </div>
@@ -69,6 +69,7 @@
                                         <th>Autor</th>
                                         <th>Uso de IA</th>
                                         <th>Estado</th>
+                                        <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,6 +79,9 @@
                                         <td><img src="imagenes/icon-user.png" width="32" height="32" class="rounded-circle me-2 object-fit-cover" alt="Admin">Andrés Ruiz</td>
                                         <td><span class="badge text-bg-danger">Alta</span></td>
                                         <td><span class="badge text-bg-success">Enviado</span></td>
+                                        <td class="text-center">
+                                            <a href="editarReporte.jsp?id=101" class="btn btn-sm btn-outline-primary rounded-pill px-3 text-decoration-none">Editar</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -88,7 +92,7 @@
                 <section class="tab-pane fade" id="usuarios" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
-                            <img src="https://picsum.photos/seed/usuarios/1200/400" class="object-fit-cover opacity-50" alt="Usuarios">
+                            <img src="imagenes/gestion-usuarios.jpg" class="object-fit-cover opacity-50" alt="Usuarios">
                         </div>
                         <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
                             <h2 class="card-title fw-bold"><i class="bi bi-people-fill text-info me-2"></i>Gestionar usuarios</h2>
@@ -101,7 +105,7 @@
                             <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                             <input type="search" class="form-control" placeholder="Buscar usuario">
                         </div>
-                        <a href="nuevoUsuario.jsp" class="btn btn-info text-white rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center">
+                        <a href="registroUsuario.jsp" class="btn btn-info text-white rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center">
                             <i class="bi bi-person-plus me-1"></i>Nuevo usuario
                         </a>
                     </div>
@@ -119,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer bg-white border-0 pb-4 d-flex justify-content-center">
-                                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-4"><i class="bi bi-pencil"></i> Editar</a>
+                                    <a href="editarUsuario.jsp" class="btn btn-sm btn-outline-primary rounded-pill px-4"><i class="bi bi-pencil"></i> Editar</a>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +133,7 @@
                 <section class="tab-pane fade" id="grupos" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
-                            <img src="imagenes/gestionGrupos.jpg" class="object-fit-cover opacity-50" alt="Grupos">
+                            <img src="imagenes/gestionar-grupos.jpg" class="object-fit-cover opacity-50" alt="Grupos">
                         </div>
                         <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
                             <h2 class="card-title fw-bold"><i class="bi bi-diagram-3-fill text-success me-2"></i>Gestionar grupos</h2>
@@ -138,7 +142,7 @@
                     </div>
 
                     <div class="text-end mb-4">
-                        <a href="crearGrupo.jsp" class="btn btn-success rounded-pill px-4 fw-bold text-decoration-none d-inline-flex align-items-center">
+                        <a href="registroGrupo.jsp" class="btn btn-success rounded-pill px-4 fw-bold text-decoration-none d-inline-flex align-items-center">
                             <i class="bi bi-plus-circle me-1"></i>Crear grupo
                         </a>
                     </div>
@@ -146,11 +150,9 @@
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                                <img src="https://picsum.photos/seed/equipo1/600/260" class="card-img-top" alt="Equipo 1">
                                 <div class="card-body p-4">
                                     <h5 class="card-title fw-bold mb-3">Equipo 1</h5>
-                                    
-                                    <!-- Docente encargado -->
+
                                     <div class="p-2 mb-3 bg-light rounded-3 d-flex align-items-center gap-2 border">
                                         <i class="bi bi-person-badge text-success fs-5"></i>
                                         <span class="small fw-semibold text-secondary">Docente encargado:</span>
@@ -170,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer bg-white border-0 pb-4 px-4 d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3"><i class="bi bi-trash"></i> Eliminar</button>
+                                    <a href="editarGrupo.jsp" class="btn btn-sm btn-outline-primary rounded-pill px-3"><i class="bi bi-trash"></i> Editar</a>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +182,7 @@
                 <section class="tab-pane fade" id="ias" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
-                            <img src="imagenes/gestionReportes.jpg" class="object-fit-cover opacity-50" alt="Inteligencias artificiales">
+                            <img src="imagenes/gestionar-ias.jpg" class="object-fit-cover opacity-50" alt="Inteligencias artificiales">
                         </div>
                         <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
                             <h2 class="card-title fw-bold"><i class="bi bi-robot text-primary me-2"></i>Gestionar IAs</h2>
@@ -189,7 +191,7 @@
                     </div>
 
                     <div class="text-center mb-4">
-                        <a href="registrarIA.jsp" class="btn btn-primary rounded-pill px-5 fw-bold text-decoration-none d-inline-flex align-items-center justify-content-center">
+                        <a href="registroIA.jsp" class="btn btn-primary rounded-pill px-5 fw-bold text-decoration-none d-inline-flex align-items-center justify-content-center">
                             <i class="bi bi-cpu me-2"></i>Registrar IA
                         </a>
                     </div>
@@ -205,8 +207,7 @@
                                     <p class="text-body-secondary small mb-4">Ideal para redacción de ensayos, explicación de conceptos generales y tutoría conversacional.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</button>
-                                    </div>
+                                        <a href="editarIA.jsp?id=1" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -220,8 +221,7 @@
                                     <p class="text-body-secondary small mb-4">Potente para análisis multimodal, síntesis rápida de documentos y búsqueda en tiempo real.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</button>
-                                    </div>
+                                        <a href="editarIA.jsp?id=2" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -235,8 +235,7 @@
                                     <p class="text-body-secondary small mb-4">Excelente para programación avanzada, resolución de algoritmos complejos y lógica matemática.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</button>
-                                    </div>
+                                        <a href="editarIA.jsp?id=3" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -250,8 +249,7 @@
                                     <p class="text-body-secondary small mb-4">Interactúa directamente con tus propios documentos, PDFs y notas de estudio sin riesgo de alucinaciones. complejos y lógica matemática.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</button>
-                                    </div>
+                                        <a href="editarIA.jsp?id=4" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
                                 </div>
                             </div>
                         </div>

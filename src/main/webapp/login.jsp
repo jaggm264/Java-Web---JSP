@@ -44,10 +44,6 @@
             </form>
             <div class="d-flex justify-content-between align-items-center">
                     <a href="index.jsp" class="btn btn-outline-danger btn-sm rounded-pill px-3">Salir</a>
-                <div class="text-end mb-2">
-                    <small class="text-muted">¿No tienes cuenta?</small>
-                    <a href="registroUsuario.jsp" class="btn btn-secondary btn-sm ms-2">Registrate aqui</a>
-                </div>
             </div>   
         </div>        
     </div>    

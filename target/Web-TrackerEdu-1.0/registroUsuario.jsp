@@ -72,7 +72,7 @@
             </form>
             
             <div class="mt-2">
-                <a href="login.jsp" class="btn btn-outline-danger btn-sm text-left rounded-pill px-3">Salir</a>
+                <a href="adminUsuario.jsp" class="btn btn-outline-danger btn-sm text-left rounded-pill px-3">Salir</a>
             </div>
 
         </div>
