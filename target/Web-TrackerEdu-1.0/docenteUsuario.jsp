@@ -1,9 +1,24 @@
 <%@include file="lib/header.jsp" %>
+<%@page import="Modelo.Docente" %>
+<%@page import="Modelo.Usuario" %>
+
+<%
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioLogueado");
+    Docente docente = null;
+    String nombreDocente = "Profesor";
+    
+    if (usuarioSesion instanceof Docente) {
+        docente = (Docente) usuarioSesion;
+        nombreDocente = docente.getNombre();
+    } else if (usuarioSesion != null) {
+        nombreDocente = usuarioSesion.getNombre();
+    }
+%>
 
 <div class="container my-5">
 
     <div class="text-center mb-4">
-        <h1 class="fw-bold">Panel de Docente: Profesor</h1>
+        <h1 class="fw-bold">Panel de Docente: <%= nombreDocente %></h1>
         <p class="fs-5 text-secondary">
             Grupo Asignado: <span class="fw-semibold text-dark">Sin asignar</span>
         </p>

@@ -8,14 +8,16 @@
 
             <h1 class="text-center fw-bold mb-3">REGISTRO DE USUARIO</h1>
 
-            <form action="login.jsp" action="servletUsuarios.java" method="POST">
+            <form action="ServletUsuarios" method="POST">
+                <input type="hidden" name="accion" value="registrar">
 
                 <div class="form-floating mb-3">
                     <input 
                         type="text" 
                         class="form-control" 
                         id="floatingName" 
-                        placeholder="Anon">
+                        name="nombre"
+                        placeholder="Anon" required>
                     <label for="floatingName">Nombre</label>
                 </div>
 
@@ -24,7 +26,8 @@
                         type="email" 
                         class="form-control" 
                         id="floatingEmail"
-                        placeholder="example@gmail.com">
+                        name="correo"
+                        placeholder="example@gmail.com" required>
                     <label for="floatingEmail">Correo Institucional</label>
                 </div>
 
@@ -33,7 +36,8 @@
                         type="text" 
                         class="form-control" 
                         id="floatingIdentificationDocument" 
-                        placeholder="123456789">
+                        name="documento"
+                        placeholder="123456789" required>
                     <label for="floatingIdentificationDocument">Documento de identificación</label>
                 </div>
 
@@ -42,7 +46,8 @@
                         type="password" 
                         class="form-control" 
                         id="floatingPassword" 
-                        placeholder="Password">
+                        name="contraseña"
+                        placeholder="Password" required>
                     <label for="floatingPassword">Contraseña</label>
                 </div>
 
@@ -51,17 +56,16 @@
                         type="password" 
                         class="form-control" 
                         id="floatingConfirmPassword" 
-                        placeholder="Password">
+                        placeholder="Password" required>
                     <label for="floatingConfirmPassword">Confirmar Contraseña</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <select class="form-select" id="tipoRol">
+                    <select class="form-select" id="tipoRol" name="tipoRol" required>
                         <option selected disabled>Escoge un rol</option>
                         <option value="estudiante">Estudiante</option>
                         <option value="profesor">Profesor</option>
                     </select>
-
                     <label for="tipoRol">Rol</label>
                 </div>
 

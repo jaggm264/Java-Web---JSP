@@ -1,17 +1,34 @@
 <%@include file="lib/header.jsp" %>
+<%@page import="Modelo.Estudiante" %>
+<%@page import="Modelo.Usuario" %>
+<%
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioLogueado");
+    Estudiante estudiante = null;
+    String nombreEstudiante = "estudiante";
+    
+    if (usuarioSesion instanceof Estudiante) {
+        estudiante = (Estudiante) usuarioSesion;
+        nombreEstudiante = estudiante.getNombre();
+    } else if (usuarioSesion != null) {
+        nombreEstudiante = usuarioSesion.getNombre();
+    }
+%>
 
 <div class="container my-5">
 
     <div class="text-center mb-4">
-        <h1 class="fw-bold">Bienvenid@ estudiante</h1>
+        <h1 class="fw-bold">Bienvenid@, <%= nombreEstudiante %></h1>
         <p class="fs-5 text-secondary">Querido estudiante, pertenece al grupo:</p>
     </div>
+    
     <div class="mb-5">
         <img src="imagenes/banner-estudiante.jpg" alt="Banner del Estudiante" class="w-100 rounded-4 shadow-sm img-fluid" style="max-height: 280px; object-fit: cover;">
     </div>
+    
     <div class="text-center mb-5">
         <h5 class="fw-bold text-secondary">IAs para guiar tu método de estudio</h5>
     </div>
+    
     <div class="row g-4 mb-5">
         <div class="col-12 col-md-4">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white d-flex flex-row align-items-center justify-content-between">

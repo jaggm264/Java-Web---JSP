@@ -11,6 +11,7 @@ Modelo\gestionarAI.class
 Modelo\Estudiante.class
 Modelo\gestionarReporte.class
 Modelo\gestionarGrupo.class
+Servlets\ServletUsuarios.class
 Modelo\HerramientaAI.class
 Modelo\Admin.class
 Modelo\Docente.class

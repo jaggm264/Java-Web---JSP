@@ -1,19 +1,21 @@
 <link href="./styles/style.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-sm-10 col-md-5 col-lg-4">
             <h1 class="text-center fw-bold mb-3">INICIO DE SESIÓN</h1>
-            <form action="index.jsp" method="GET">
+            <form action="ServletUsuarios" method="POST">
+                <input type="hidden" name="accion" value="login">
                 
                 <div class="form-floating mb-2">
                     <input 
                         type="email" 
                         class="form-control" 
                         id="floatingEmail"
-                        name="email_login"
-                        placeholder="example@gmail.com">
+                        name="correo"
+                        placeholder="example@gmail.com" required>
                     <label for="floatingEmail">Correo Institucional</label>
                 </div>
                 
@@ -22,7 +24,7 @@
                         type="text" 
                         class="form-control" 
                         id="floatingIdentificationDocument"
-                        name="identificationDocument_login"
+                        name="documento"
                         placeholder="123456789">
                     <label for="floatingIdentificationDocument">Documento de identificación</label>
                 </div>
@@ -32,8 +34,8 @@
                         type="password" 
                         class="form-control" 
                         id="floatingPassword"
-                        name="password_login"
-                        placeholder="Password">
+                        name="contraseña"
+                        placeholder="Password" required>
                     <label for="floatingPassword">Contraseña</label>
                 </div>
                         
@@ -48,4 +50,5 @@
         </div>        
     </div>    
 </div>
+
 <%@include file="lib/footer.jsp" %>

@@ -1,4 +1,6 @@
 <%@include file="lib/header.jsp" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="Modelo.Usuario" %>
 
 <div class="container-fluid py-4 pb-5">
     <div class="row g-4">
@@ -111,22 +113,35 @@
                     </div>
 
                     <div class="row g-4">
-                        <!-- Único usuario de ejemplo (Administrador) -->
+                        <%
+                            // Obtenemos la lista enviada desde el Servlet
+                            ArrayList<Usuario> usuarios = (ArrayList<Usuario>) request.getAttribute("listaUsuarios");
+                            if (usuarios != null && !usuarios.isEmpty()) {
+                                for (Usuario u : usuarios) {
+                        %>
                         <div class="col-md-6 col-xl-4">
                             <div class="card h-100 shadow-sm text-center border-0 rounded-4">
                                 <div class="card-body p-4">
-                                    <img src="imagenes/icon-user.png" class="rounded-circle border border-3 border-secondary mb-3 object-fit-cover" width="96" height="96" alt="Andrés Ruiz">
-                                    <h5 class="mb-0 fw-bold">Andrés Ruiz</h5>
-                                    <p class="text-body-secondary small mb-3">andres@correo.com</p>
+                                    <img src="imagenes/icon-user.png" class="rounded-circle border border-3 border-secondary mb-3 object-fit-cover" width="96" height="96" alt="<%= u.getNombre() %>">
+                                    <h5 class="mb-0 fw-bold"><%= u.getNombre() %></h5>
+                                    <p class="text-body-secondary small mb-3"><%= u.getCorreo() %></p>
                                     <div class="text-center">
-                                        <span class="badge text-bg-dark px-3 py-2 rounded-pill">Administrador</span>
+                                        <span class="badge text-bg-dark px-3 py-2 rounded-pill"><%= u.getRol() %></span>
                                     </div>
                                 </div>
                                 <div class="card-footer bg-white border-0 pb-4 d-flex justify-content-center">
-                                    <a href="editarUsuario.jsp" class="btn btn-sm btn-outline-primary rounded-pill px-4"><i class="bi bi-pencil"></i> Editar</a>
+                                    <a href="ServletUsuarios?accion=cargarEditar&id=<%= u.getidUsuario() %>" class="btn btn-sm btn-outline-primary rounded-pill px-4"><i class="bi bi-pencil"></i> Editar</a>
                                 </div>
                             </div>
                         </div>
+                        <% 
+                                }
+                            } else { 
+                        %>
+                            <div class="col-12 text-center py-4">
+                                <p class="text-muted fw-semibold">No hay usuarios cargados en esta vista. Asegúrate de iniciar sesión desde el Servlet de usuarios.</p>
+                            </div>
+                        <% } %>
                     </div>
                 </section>
 
