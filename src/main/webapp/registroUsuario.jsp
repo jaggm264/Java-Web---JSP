@@ -7,6 +7,25 @@
         <div class="col-md-6">
 
             <h1 class="text-center fw-bold mb-3">REGISTRO DE USUARIO</h1>
+            
+            <% 
+                String error = request.getParameter("error");
+                if ("duplicado".equals(error)) {
+            %>
+                <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                    <small><i class="bi bi-exclamation-triangle-fill me-1"></i> El correo institucional o el documento ya están registrados.</small>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% 
+                } else if ("passwordsNoCoinciden".equals(error)) {
+            %>
+                <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                    <small><i class="bi bi-exclamation-triangle-fill me-1"></i> Las contraseñas no coinciden. Por favor, verifícalas.</small>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% 
+                }
+            %>
 
             <form action="ServletUsuarios" method="POST">
                 <input type="hidden" name="accion" value="registrar">
@@ -56,6 +75,7 @@
                         type="password" 
                         class="form-control" 
                         id="floatingConfirmPassword" 
+                        name="confirmarContraseña"
                         placeholder="Password" required>
                     <label for="floatingConfirmPassword">Confirmar Contraseña</label>
                 </div>

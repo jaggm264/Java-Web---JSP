@@ -6,6 +6,17 @@
     <div class="row justify-content-center">
         <div class="col-sm-10 col-md-5 col-lg-4">
             <h1 class="text-center fw-bold mb-3">INICIO DE SESIÓN</h1>
+            <% 
+                String error = request.getParameter("error");
+                if ("credenciales".equals(error)) {
+            %>
+                <div class="alert alert-danger alert-dismissible fade show text-center py-2 mb-3" role="alert">
+                    <small><i class="bi bi-exclamation-triangle-fill me-1"></i> Correo, documento o contraseña incorrectos.</small>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% 
+                }
+            %>
             <form action="ServletUsuarios" method="POST">
                 <input type="hidden" name="accion" value="login">
                 

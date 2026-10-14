@@ -78,9 +78,29 @@ public class gestionarUsuarios {
         return null;
     }
 
-    public Usuario autenticarUsuario(String correo, String contraseña) {
+    public Usuario buscarPorCorreo(String correo) {
         for (Usuario u : listaUsuarios) {
-            if (u.getCorreo().equalsIgnoreCase(correo) && u.getContraseña().equals(contraseña)) {
+            if (u.getCorreo().equalsIgnoreCase(correo)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public Usuario buscarPorDocumento(String documento) {
+        for (Usuario u : listaUsuarios) {
+            if (u.getDocumento() != null && u.getDocumento().equals(documento)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public Usuario autenticarUsuario(String correo, String documento, String contraseña) {
+        for (Usuario u : listaUsuarios) {
+            if (u.getCorreo().equalsIgnoreCase(correo) 
+                && u.getDocumento().equals(documento) 
+                && u.getContraseña().equals(contraseña)) {
                 return u; 
             }
         }

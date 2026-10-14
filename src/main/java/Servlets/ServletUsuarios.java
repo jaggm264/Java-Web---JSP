@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "ServletUsuarios", urlPatterns = {"/ServletUsuarios"})
 public class ServletUsuarios extends HttpServlet {
 
-    // Método para obtener el gestor desde el ServletContext (evita que se reinicie al recargar el servidor)
     private gestionarUsuarios getGestorUsuarios(HttpServletRequest request) {
         ServletContext context = request.getServletContext();
         gestionarUsuarios gestor = (gestionarUsuarios) context.getAttribute("gestorUsuariosInstance");
@@ -40,7 +39,6 @@ public class ServletUsuarios extends HttpServlet {
             return;
         }
 
-        // Obtenemos la instancia persistente del gestor
         gestionarUsuarios gestorUsuarios = getGestorUsuarios(request);
 
         switch (accion) {
@@ -70,9 +68,10 @@ public class ServletUsuarios extends HttpServlet {
 
     private void autenticar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws IOException {
         String correo = request.getParameter("correo");
+        String documento = request.getParameter("documento");
         String contraseña = request.getParameter("contraseña");
 
-        Usuario usuario = gestorUsuarios.autenticarUsuario(correo, contraseña);
+        Usuario usuario = gestorUsuarios.autenticarUsuario(correo, documento, contraseña);
 
         if (usuario != null) {
             HttpSession session = request.getSession();
@@ -108,8 +107,19 @@ public class ServletUsuarios extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String contraseña = request.getParameter("contraseña");
+        String confirmarContraseña = request.getParameter("confirmarContraseña"); // Capturamos la confirmación
         String documento = request.getParameter("documento");
         String rol = request.getParameter("tipoRol");
+
+        if (contraseña == null || !contraseña.equals(confirmarContraseña)) {
+            response.sendRedirect("registroUsuario.jsp?error=passwordsNoCoinciden");
+            return;
+        }
+
+        if (gestorUsuarios.buscarPorCorreo(correo) != null || gestorUsuarios.buscarPorDocumento(documento) != null) {
+            response.sendRedirect("registroUsuario.jsp?error=duplicado");
+            return;
+        }
 
         if ("estudiante".equalsIgnoreCase(rol)) {
             gestorUsuarios.crearEstudiante(nombre, correo, contraseña, documento);
