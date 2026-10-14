@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @WebServlet(name = "ServletUsuarios", urlPatterns = {"/ServletUsuarios"})
 public class ServletUsuarios extends HttpServlet {
@@ -56,6 +57,9 @@ public class ServletUsuarios extends HttpServlet {
                 break;
             case "actualizar":
                 actualizar(request, response, gestorUsuarios);
+                break;
+            case "buscar":
+                buscar(request, response, gestorUsuarios);
                 break;
             case "eliminar":
                 eliminar(request, response, gestorUsuarios);
@@ -139,16 +143,20 @@ public class ServletUsuarios extends HttpServlet {
         String rol = request.getParameter("rol");
 
         gestorUsuarios.actualizarUsuario(idUsuario, nombre, correo, documento, contraseña, rol);
-        
-        response.sendRedirect("ServletUsuarios?accion=panelAdmin");
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
 
+    
+    private void buscar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws ServletException, IOException {
+        String filtro = request.getParameter("filtro");
+        ArrayList<Usuario> resultados = gestorUsuarios.buscarUsuarios(filtro);
+        request.setAttribute("listaUsuarios", resultados);
+        request.getRequestDispatcher("adminUsuario.jsp").forward(request, response);
+    }
     private void eliminar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws IOException {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-
         gestorUsuarios.eliminarUsuario(idUsuario);
-        
-        response.sendRedirect("ServletUsuarios?accion=panelAdmin");
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
 
     @Override

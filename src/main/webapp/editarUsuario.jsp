@@ -62,7 +62,7 @@
                                 <i class="bi bi-trash me-1"></i>Eliminar Usuario
                             </button>
                             
-                            <a href="ServletUsuarios?accion=panelAdmin" class="btn btn-secondary rounded-pill px-4 text-nowrap text-decoration-none">
+                            <a href="ServletUsuarios?accion=panelAdmin&tab=usuarios" class="btn btn-secondary rounded-pill px-4 text-nowrap text-decoration-none">
                                 Cancelar
                             </a>
                         </div>

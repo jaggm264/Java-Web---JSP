@@ -68,7 +68,23 @@ public class gestionarUsuarios {
     public ArrayList<Usuario> obtenerTodosLosUsuarios() {
         return listaUsuarios;
     }
-
+    
+    public ArrayList<Usuario> buscarUsuarios(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return listaUsuarios;
+        }
+        ArrayList<Usuario> filtrados = new ArrayList<>();
+        String busqueda = filtro.trim().toLowerCase();
+        for (Usuario u : listaUsuarios) {
+            String correo = u.getCorreo() != null ? u.getCorreo().toLowerCase() : "";
+            String documento = u.getDocumento() != null ? u.getDocumento().toLowerCase() : "";
+            if (correo.contains(busqueda) || documento.contains(busqueda)) {
+                filtrados.add(u);
+            }
+        }
+        return filtrados;
+    }
+    
     public Usuario buscarPorId(int idUsuario) {
         for (Usuario u : listaUsuarios) {
             if (u.getidUsuario() == idUsuario) {

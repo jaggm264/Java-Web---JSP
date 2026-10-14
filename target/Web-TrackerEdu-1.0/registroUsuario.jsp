@@ -96,7 +96,7 @@
             </form>
             
             <div class="mt-2">
-                <a href="adminUsuario.jsp" class="btn btn-outline-danger btn-sm text-left rounded-pill px-3">Salir</a>
+                <a href="ServletUsuarios?accion=panelAdmin" class="btn btn-outline-danger btn-sm text-left rounded-pill px-3">Salir</a>
             </div>
 
         </div>

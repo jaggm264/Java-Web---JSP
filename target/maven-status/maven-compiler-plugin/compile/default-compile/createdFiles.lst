@@ -14,4 +14,5 @@ Modelo\gestionarGrupo.class
 Servlets\ServletUsuarios.class
 Modelo\HerramientaAI.class
 Modelo\Admin.class
+Servlets\ServletHerramientaIA.class
 Modelo\Docente.class

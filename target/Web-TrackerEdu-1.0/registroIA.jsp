@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="d-flex flex-wrap gap-2">
-                            <a href="adminUsuario.jsp" class="btn btn-secondary rounded-pill px-4 text-decoration-none">Cancelar</a>
+                            <a href="ServletUsuarios?accion=panelAdmin" class="btn btn-secondary rounded-pill px-4 text-decoration-none">Cancelar</a>
                             <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Registrar IA</button>
                         </div>
                     </form>

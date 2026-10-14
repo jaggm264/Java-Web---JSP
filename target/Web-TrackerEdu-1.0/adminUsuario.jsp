@@ -1,6 +1,14 @@
 <%@include file="lib/header.jsp" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="Modelo.Usuario" %>
+<%@page import="Modelo.gestionarUsuarios" %>
+
+<%
+    String filtroParam = request.getParameter("filtro");
+    String tabParam = request.getParameter("tab");
+
+    boolean mostrarUsuarios = (filtroParam != null || "usuarios".equals(tabParam));
+%>
 
 <div class="container-fluid py-4 pb-5">
     <div class="row g-4">
@@ -10,10 +18,10 @@
                 <div class="card-body">
                     <p class="text-body-secondary small mb-2 fw-semibold">Secciones</p>
                     <div class="nav nav-pills flex-lg-column gap-2" id="menu" role="tablist">
-                        <button class="nav-link active text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#reportes" type="button" role="tab">
+                        <button class="nav-link <%= !mostrarUsuarios ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#reportes" type="button" role="tab">
                             <i class="bi bi-flag me-2"></i>Gestionar reportes
                         </button>
-                        <button class="nav-link text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#usuarios" type="button" role="tab">
+                        <button class="nav-link <%= mostrarUsuarios ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#usuarios" type="button" role="tab">
                             <i class="bi bi-people me-2"></i>Gestionar usuarios
                         </button>
                         <button class="nav-link text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#grupos" type="button" role="tab">
@@ -30,7 +38,7 @@
         <main class="col-lg-9 col-xl-10">
             <div class="tab-content">
 
-                <section class="tab-pane fade show active" id="reportes" role="tabpanel">
+                <section class="tab-pane fade <%= !mostrarUsuarios ? "show active" : "" %>" id="reportes" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestionReportes.jpg" class="object-fit-cover opacity-50" alt="Reportes">
@@ -91,7 +99,7 @@
                     </div>
                 </section>
 
-                <section class="tab-pane fade" id="usuarios" role="tabpanel">
+                <section class="tab-pane fade <%= mostrarUsuarios ? "show active" : "" %>" id="usuarios" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestion-usuarios.jpg" class="object-fit-cover opacity-50" alt="Usuarios">
@@ -102,29 +110,44 @@
                         </div>
                     </div>
 
-                    <div class="d-flex flex-wrap justify-content-between gap-2 mb-4">
-                        <div class="input-group w-auto">
-                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                            <input type="search" class="form-control" placeholder="Buscar usuario">
+                    <form action="ServletUsuarios" method="GET" class="row g-2 align-items-center mb-4">
+                        <input type="hidden" name="accion" value="buscar">
+                        
+                        <div class="col-auto">
+                            <div class="input-group" style="width: 380px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="search" id="inputBusquedaUsuarios" class="form-control" name="filtro" value="<%= filtroParam != null ? filtroParam : "" %>" placeholder="Buscar por correo o documento">
+                                <button type="submit" class="btn btn-primary px-3">Filtrar</button>
+                            </div>
                         </div>
-                        <a href="registroUsuario.jsp" class="btn btn-info text-white rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center">
-                            <i class="bi bi-person-plus me-1"></i>Nuevo usuario
-                        </a>
-                    </div>
 
-                    <div class="row g-4">
+                        <div class="col-auto ms-auto">
+                            <a href="registroUsuario.jsp" class="btn btn-info text-white rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center py-2">
+                                <i class="bi bi-person-plus me-1"></i>Nuevo usuario
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="row g-4" id="contenedorUsuarios">
                         <%
-                            // Obtenemos la lista enviada desde el Servlet
                             ArrayList<Usuario> usuarios = (ArrayList<Usuario>) request.getAttribute("listaUsuarios");
+                            if (usuarios == null) {
+                                gestionarUsuarios gestorAdmin = (gestionarUsuarios) application.getAttribute("gestorUsuariosInstance");
+                                if (gestorAdmin != null) {
+                                    usuarios = gestorAdmin.obtenerTodosLosUsuarios();
+                                }
+                            }
+
                             if (usuarios != null && !usuarios.isEmpty()) {
                                 for (Usuario u : usuarios) {
                         %>
-                        <div class="col-md-6 col-xl-4">
+                        <div class="col-md-6 col-xl-4 tarjeta-usuario">
                             <div class="card h-100 shadow-sm text-center border-0 rounded-4">
                                 <div class="card-body p-4">
                                     <img src="imagenes/icon-user.png" class="rounded-circle border border-3 border-secondary mb-3 object-fit-cover" width="96" height="96" alt="<%= u.getNombre() %>">
                                     <h5 class="mb-0 fw-bold"><%= u.getNombre() %></h5>
-                                    <p class="text-body-secondary small mb-3"><%= u.getCorreo() %></p>
+                                    <p class="text-body-secondary small mb-1"><%= u.getCorreo() %></p>
+                                    <p class="text-secondary small mb-3"><strong>Doc:</strong> <%= u.getDocumento() %></p>
                                     <div class="text-center">
                                         <span class="badge text-bg-dark px-3 py-2 rounded-pill"><%= u.getRol() %></span>
                                     </div>
@@ -139,7 +162,7 @@
                             } else { 
                         %>
                             <div class="col-12 text-center py-4">
-                                <p class="text-muted fw-semibold">No hay usuarios cargados en esta vista. Asegúrate de iniciar sesión desde el Servlet de usuarios.</p>
+                                <p class="text-muted fw-semibold">No se encontraron usuarios que coincidan con la búsqueda.</p>
                             </div>
                         <% } %>
                     </div>
@@ -222,7 +245,8 @@
                                     <p class="text-body-secondary small mb-4">Ideal para redacción de ensayos, explicación de conceptos generales y tutoría conversacional.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=1" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
+                                        <a href="editarIA.jsp?id=1" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +260,8 @@
                                     <p class="text-body-secondary small mb-4">Potente para análisis multimodal, síntesis rápida de documentos y búsqueda en tiempo real.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=2" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
+                                        <a href="editarIA.jsp?id=2" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -250,7 +275,8 @@
                                     <p class="text-body-secondary small mb-4">Excelente para programación avanzada, resolución de algoritmos complejos y lógica matemática.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=3" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
+                                        <a href="editarIA.jsp?id=3" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -261,10 +287,11 @@
                                         <h5 class="card-title fw-bold">Notebook</h5>
                                         <span class="badge text-bg-success">En línea</span>
                                     </div>
-                                    <p class="text-body-secondary small mb-4">Interactúa directamente con tus propios documentos, PDFs y notas de estudio sin riesgo de alucinaciones. complejos y lógica matemática.</p>
+                                    <p class="text-body-secondary small mb-4">Interactúa directamente con tus propios documentos, PDFs y notas de estudio sin riesgo de alucinaciones.</p>
                                     <div class="d-flex justify-content-between align-items-center text-muted small">
                                         <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=4" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>                                    </div>
+                                        <a href="editarIA.jsp?id=4" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
