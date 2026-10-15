@@ -1,7 +1,5 @@
-<link href="./styles/style.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<div class="container mt-5">
+<%@include file="lib/header.jsp" %>
+<div class="container mt-5 mb-5">
 
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -85,19 +83,17 @@
                         <option selected disabled>Escoge un rol</option>
                         <option value="estudiante">Estudiante</option>
                         <option value="profesor">Profesor</option>
+                        <option value="administrador">Administrador</option>
                     </select>
                     <label for="tipoRol">Rol</label>
                 </div>
 
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mt-4">
+                    <a href="ServletUsuarios?accion=panelAdmin&tab=usuarios" class="btn btn-secondary rounded-pill px-4 text-decoration-none">Cancelar</a>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Registrar Usuario</button>
                 </div>
 
             </form>
-            
-            <div class="mt-2">
-                <a href="ServletUsuarios?accion=panelAdmin" class="btn btn-outline-danger btn-sm text-left rounded-pill px-3">Salir</a>
-            </div>
 
         </div>
     </div>

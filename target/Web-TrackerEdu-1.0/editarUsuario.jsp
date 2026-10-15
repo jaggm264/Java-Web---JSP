@@ -7,6 +7,8 @@
     if (u == null) {
         u = new Estudiante(); 
     }
+    boolean esAdmin = "Administrador".equals(u.getRol()) || "Admin".equals(u.getRol());
+    String error = request.getParameter("error");
 %>
 
 <div class="container-fluid py-4 pb-5">
@@ -18,7 +20,14 @@
                     <span class="badge bg-light text-dark px-3 py-2 rounded-pill">ID: <%= u.getidUsuario() %></span>
                 </div>
                 <div class="card-body p-4">
-                    <!-- Apuntamos correctamente al ServletUsuarios -->
+                    
+                    <% if ("duplicado".equals(error)) { %>
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                            <strong>¡Error!</strong> El correo o documento ingresado ya está registrado por otro usuario.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
                     <form action="ServletUsuarios" method="POST">
                         <input type="hidden" name="idUsuario" value="<%= u.getidUsuario() %>">
                         
@@ -45,7 +54,9 @@
                         <div class="mb-3">
                             <label for="rol" class="form-label fw-semibold">Rol</label>
                             <select class="form-select" id="rol" name="rol" required>
-                                <option value="Administrador" <%= "Administrador".equals(u.getRol()) || "Admin".equals(u.getRol()) ? "selected" : "" %>>Administrador</option>
+                                <% if (esAdmin) { %>
+                                    <option value="Administrador" selected>Administrador</option>
+                                <% } %>
                                 <option value="Estudiante" <%= "Estudiante".equals(u.getRol()) ? "selected" : "" %>>Estudiante</option>
                                 <option value="Profesor" <%= "Profesor".equals(u.getRol()) || "Docente".equals(u.getRol()) ? "selected" : "" %>>Profesor</option>
                             </select>

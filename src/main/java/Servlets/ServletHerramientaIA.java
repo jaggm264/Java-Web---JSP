@@ -76,7 +76,11 @@ public class ServletHerramientaIA extends HttpServlet {
             imagen = "icon-ai.png";
         }
 
-        gestorAI.crearHerramienta(nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+        boolean creado = gestorAI.crearHerramienta(nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+        if (!creado) {
+            response.sendRedirect("registroIA.jsp?error=duplicado");
+            return;
+        }
         response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
     }
 
@@ -111,7 +115,11 @@ public class ServletHerramientaIA extends HttpServlet {
                     imagen = "icon-ai.png";
                 }
 
-                gestorAI.actualizarHerramienta(id, nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+                boolean actualizado = gestorAI.actualizarHerramienta(id, nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+                if (!actualizado) {
+                    response.sendRedirect("ServletHerramientaIA?accion=cargarEditar&id=" + id + "&error=duplicado");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 // Error
             }

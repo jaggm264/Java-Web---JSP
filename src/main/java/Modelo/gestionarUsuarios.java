@@ -78,7 +78,10 @@ public class gestionarUsuarios {
         for (Usuario u : listaUsuarios) {
             String correo = u.getCorreo() != null ? u.getCorreo().toLowerCase() : "";
             String documento = u.getDocumento() != null ? u.getDocumento().toLowerCase() : "";
-            if (correo.contains(busqueda) || documento.contains(busqueda)) {
+            String nombre = u.getNombre() != null ? u.getNombre().toLowerCase() : "";
+            String rol = u.getRol() != null ? u.getRol().toLowerCase() : "";
+            
+            if (correo.contains(busqueda) || documento.contains(busqueda) || nombre.contains(busqueda) || rol.contains(busqueda)) {
                 filtrados.add(u);
             }
         }
@@ -112,6 +115,26 @@ public class gestionarUsuarios {
         return null;
     }
 
+    public boolean existeCorreoExcluding(String correo, int idExcluir) {
+        if (correo == null) return false;
+        for (Usuario u : listaUsuarios) {
+            if (u.getidUsuario() != idExcluir && u.getCorreo().equalsIgnoreCase(correo.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeDocumentoExcluding(String documento, int idExcluir) {
+        if (documento == null) return false;
+        for (Usuario u : listaUsuarios) {
+            if (u.getidUsuario() != idExcluir && documento.equals(u.getDocumento())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Usuario autenticarUsuario(String correo, String documento, String contraseña) {
         for (Usuario u : listaUsuarios) {
             if (u.getCorreo().equalsIgnoreCase(correo) 
@@ -129,9 +152,18 @@ public class gestionarUsuarios {
             return false;
         }
 
-        listaUsuarios.remove(usuarioActual);
+        if (existeCorreoExcluding(correo, idUsuario) || existeDocumentoExcluding(documento, idUsuario)) {
+            return false;
+        }
 
         String rolNormalizado = rol != null ? rol.trim() : "";
+        String rolActual = usuarioActual.getRol() != null ? usuarioActual.getRol().trim() : "";
+        boolean esAdminOriginal = "Admin".equalsIgnoreCase(rolActual) || "Administrador".equalsIgnoreCase(rolActual);
+        if (!esAdminOriginal && ("Admin".equalsIgnoreCase(rolNormalizado) || "Administrador".equalsIgnoreCase(rolNormalizado))) {
+            rolNormalizado = rolActual;
+        }
+
+        listaUsuarios.remove(usuarioActual);
 
         if (rolNormalizado.equalsIgnoreCase("Profesor") || rolNormalizado.equalsIgnoreCase("Docente")) {
             contadorIdDocente++;
@@ -148,7 +180,7 @@ public class gestionarUsuarios {
         } else {
             Admin a = new Admin(idUsuario, nombre, correo, contraseña, gestorGrupos, gestorAIs, this, gestorReportes);
             a.setDocumento(documento);
-            a.setRol(rol);
+            a.setRol(rolNormalizado);
             listaUsuarios.add(a);
         }
         

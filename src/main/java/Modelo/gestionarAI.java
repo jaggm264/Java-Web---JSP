@@ -28,10 +28,54 @@ public class gestionarAI {
         crearHerramienta("NotebookLM", "Síntesis de fuentes y Documentación", "Intermedio", "https://notebooklm.google.com", "notebooklm-icon.png");
     }
 
-    public void crearHerramienta(String nombreAI, String nombreCompetencia, String descripcionNivel, String url, String imagen) {
+    public boolean existeNombreAI(String nombreAI) {
+        if (nombreAI == null) return false;
+        for (HerramientaAI h : listaHerramientas) {
+            if (h.getNombreAI().equalsIgnoreCase(nombreAI.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeUrlAI(String url) {
+        if (url == null) return false;
+        for (HerramientaAI h : listaHerramientas) {
+            if (h.getUrl() != null && h.getUrl().equalsIgnoreCase(url.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeNombreAIExcluding(String nombreAI, int idExcluir) {
+        if (nombreAI == null) return false;
+        for (HerramientaAI h : listaHerramientas) {
+            if (h.getIdHerramienta() != idExcluir && h.getNombreAI().equalsIgnoreCase(nombreAI.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existeUrlAIExcluding(String url, int idExcluir) {
+        if (url == null) return false;
+        for (HerramientaAI h : listaHerramientas) {
+            if (h.getIdHerramienta() != idExcluir && h.getUrl() != null && h.getUrl().equalsIgnoreCase(url.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean crearHerramienta(String nombreAI, String nombreCompetencia, String descripcionNivel, String url, String imagen) {
+        if (existeNombreAI(nombreAI) || existeUrlAI(url)) {
+            return false;
+        }
         contadorIdHerramienta++;
         HerramientaAI nuevaHerramienta = new HerramientaAI(contadorIdHerramienta, nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
         listaHerramientas.add(nuevaHerramienta);
+        return true;
     }
 
     public ArrayList<HerramientaAI> obtenerTodasLasHerramientas() {
@@ -64,6 +108,9 @@ public class gestionarAI {
     }
 
     public boolean actualizarHerramienta(int idHerramienta, String nuevoNombreAI, String nuevaCompetencia, String nuevaDescripcion, String nuevaUrl, String nuevaImagen) {
+        if (existeNombreAIExcluding(nuevoNombreAI, idHerramienta) || existeUrlAIExcluding(nuevaUrl, idHerramienta)) {
+            return false;
+        }
         HerramientaAI herramienta = buscarHerramientaPorId(idHerramienta);
         if (herramienta != null) {
             herramienta.setNombreAI(nuevoNombreAI);

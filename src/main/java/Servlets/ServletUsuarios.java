@@ -143,7 +143,10 @@ public class ServletUsuarios extends HttpServlet {
             gestorUsuarios.crearEstudiante(nombre, correo, contraseña, documento);
         } else if ("profesor".equalsIgnoreCase(rol) || "docente".equalsIgnoreCase(rol)) {
             gestorUsuarios.crearDocente(nombre, correo, contraseña, documento);
+        } else if ("admin".equalsIgnoreCase(rol) || "administrador".equalsIgnoreCase(rol)) {
+            gestorUsuarios.crearAdmin(nombre, correo, contraseña, documento);
         }
+        
         response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
 
@@ -155,7 +158,11 @@ public class ServletUsuarios extends HttpServlet {
         String contraseña = request.getParameter("contraseña");
         String rol = request.getParameter("rol");
 
-        gestorUsuarios.actualizarUsuario(idUsuario, nombre, correo, documento, contraseña, rol);
+        boolean actualizado = gestorUsuarios.actualizarUsuario(idUsuario, nombre, correo, documento, contraseña, rol);
+        if (!actualizado) {
+            response.sendRedirect("ServletUsuarios?accion=cargarEditar&id=" + idUsuario + "&error=duplicado");
+            return;
+        }
         response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
     

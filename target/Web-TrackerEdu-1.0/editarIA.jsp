@@ -7,6 +7,7 @@
         ai = new HerramientaAI();
     }
     String nivelActual = ai.getDescripcionNivel();
+    String error = request.getParameter("error");
 %>
 
 <div class="container mt-5 mb-5">
@@ -18,6 +19,14 @@
                     <span class="badge bg-light text-dark px-3 py-2 rounded-pill">ID: <%= ai.getIdHerramienta() %></span>
                 </div>
                 <div class="card-body p-4">
+                    
+                    <% if ("duplicado".equals(error)) { %>
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                            <strong>¡Error!</strong> Ya existe otra herramienta de IA con el mismo nombre o la misma URL en el sistema.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
                     <form action="ServletHerramientaIA" method="POST">
                         <input type="hidden" name="idHerramienta" value="<%= ai.getIdHerramienta() %>">
                         

@@ -1,4 +1,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Modelo.Usuario" %>
+<%
+    // Recuperamos el usuario logueado y su rol de la sesión
+    Usuario usuarioNav = (Usuario) session.getAttribute("usuarioLogueado");
+    String nombreNav = "Anon";
+    String rolNav = "";
+    
+    if (usuarioNav != null) {
+        if (usuarioNav.getNombre() != null) {
+            nombreNav = usuarioNav.getNombre();
+        }
+        if (usuarioNav.getRol() != null) {
+            rolNav = usuarioNav.getRol();
+        }
+    }
+%>
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,7 +38,14 @@
 
             <div class="d-flex align-items-center gap-2">
                 <img src="./imagenes/icon-user.png" alt="Perfil" width="38" height="38" class="rounded-circle border border-2 border-secondary object-fit-cover">
-                <span class="fw-semibold text-dark d-none d-sm-inline">Anon</span>
+                
+                <!-- Nombre y Rol con diseño apilado y elegante -->
+                <div class="d-none d-sm-flex flex-column text-start">
+                    <span class="fw-semibold text-dark lh-sm" style="font-size: 0.95rem;"><%= nombreNav %></span>
+                    <% if (!rolNav.isEmpty()) { %>
+                        <span class="badge bg-primary bg-opacity-10 text-primary fw-medium rounded-pill mt-1" style="font-size: 0.7rem; width: fit-content;"><%= rolNav %></span>
+                    <% } %>
+                </div>
             </div>
 
             <div class="dropdown">
@@ -36,9 +59,14 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="menuTresPuntos">
                     <li>
-                        <div class="dropdown-header d-sm-none fw-bold text-dark">
-                            Anon
+                        <div class="dropdown-header d-sm-none fw-bold text-dark pb-0">
+                            <%= nombreNav %>
                         </div>
+                        <% if (!rolNav.isEmpty()) { %>
+                            <div class="dropdown-header d-sm-none pt-1">
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill"><%= rolNav %></span>
+                            </div>
+                        <% } %>
                     </li>
                     <li><hr class="dropdown-divider d-sm-none"></li>
                     <li>

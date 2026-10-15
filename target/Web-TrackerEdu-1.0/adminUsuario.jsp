@@ -117,13 +117,14 @@
                         </div>
                     </div>
 
+                    <!-- Formulario con Búsqueda Ampliada (Correo, Documento, Nombre o Rol) -->
                     <form action="ServletUsuarios" method="GET" class="row g-2 align-items-center mb-4">
                         <input type="hidden" name="accion" value="buscar">
                         
                         <div class="col-auto">
-                            <div class="input-group" style="width: 380px;">
+                            <div class="input-group" style="width: 440px;">
                                 <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                                <input type="search" id="inputBusquedaUsuarios" class="form-control" name="filtro" value="<%= filtroParam != null ? filtroParam : "" %>" placeholder="Buscar por correo o documento">
+                                <input type="search" id="inputBusquedaUsuarios" class="form-control" name="filtro" value="<%= filtroParam != null ? filtroParam : "" %>" placeholder="Buscar por correo, doc, nombre o rol (Ej. Admin)">
                                 <button type="submit" class="btn btn-primary px-3">Filtrar</button>
                             </div>
                         </div>

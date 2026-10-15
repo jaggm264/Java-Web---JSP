@@ -1,5 +1,9 @@
 <%@include file="lib/header.jsp" %>
 
+<%
+    String error = request.getParameter("error");
+%>
+
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -8,6 +12,14 @@
                     <h5 class="mb-0 fw-bold"><i class="bi bi-cpu me-2"></i>Registrar Nueva Herramienta IA</h5>
                 </div>
                 <div class="card-body p-4">
+                    
+                    <% if ("duplicado".equals(error)) { %>
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                            <strong>¡Error!</strong> Ya existe una herramienta de IA con el mismo nombre o la misma URL en el sistema.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
                     <form action="ServletHerramientaIA" method="POST">
                         <input type="hidden" name="accion" value="crear">
                         

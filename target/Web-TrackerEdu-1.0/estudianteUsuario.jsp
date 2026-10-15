@@ -135,10 +135,6 @@
         <p class="text-center fw-bold fs-5 mb-0 text-dark">Recuerda usar las IAs de manera adecuada!</p>
     </div>
 
-    <div class="d-flex justify-content-start align-items-center mt-4">
-        <a href="login.jsp" class="btn btn-outline-danger fw-bold px-4 rounded-pill">SALIR</a>
-    </div>
-
 </div>
 
 <script>
