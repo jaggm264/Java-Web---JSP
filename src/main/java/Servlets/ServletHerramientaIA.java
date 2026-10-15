@@ -4,8 +4,10 @@
  */
 package Servlets;
 
+import Modelo.HerramientaAI;
+import Modelo.gestionarAI;
 import java.io.IOException;
-import java.io.PrintWriter;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,69 +21,144 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "ServletHerramientaIA", urlPatterns = {"/ServletHerramientaIA"})
 public class ServletHerramientaIA extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private gestionarAI getGestorAI(HttpServletRequest request) {
+        ServletContext context = request.getServletContext();
+        gestionarAI gestor = (gestionarAI) context.getAttribute("gestorAIInstance");
+        if (gestor == null) {
+            gestor = new gestionarAI();
+            context.setAttribute("gestorAIInstance", gestor);
+        }
+        return gestor;
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletHerramientaIA</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServletHerramientaIA at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        
+        String accion = request.getParameter("accion");
+        if (accion == null) {
+            response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+            return;
+        }
+
+        gestionarAI gestorAI = getGestorAI(request);
+
+        switch (accion) {
+            case "crear":
+                registrarHerramienta(request, response, gestorAI);
+                break;
+            case "cargarEditar":
+                cargarEditar(request, response, gestorAI);
+                break;
+            case "actualizar":
+                actualizarHerramienta(request, response, gestorAI);
+                break;
+            case "eliminar":
+                eliminarHerramienta(request, response, gestorAI);
+                break;
+            case "usar":
+                usarHerramienta(request, response, gestorAI);
+                break;
+            default:
+                response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+                break;
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private void registrarHerramienta(HttpServletRequest request, HttpServletResponse response, gestionarAI gestorAI) throws IOException {
+        String nombreAI = request.getParameter("nombreAI");
+        String nombreCompetencia = request.getParameter("nombreCompetencia");
+        String descripcionNivel = request.getParameter("descripcionNivel");
+        String url = request.getParameter("url");
+        String imagen = request.getParameter("imagen");
+
+        if (imagen == null || imagen.isEmpty()) {
+            imagen = "icon-ai.png";
+        }
+
+        gestorAI.crearHerramienta(nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+    }
+
+    private void cargarEditar(HttpServletRequest request, HttpServletResponse response, gestionarAI gestorAI) throws ServletException, IOException {
+        String idStr = request.getParameter("id");
+        if (idStr != null) {
+            try {
+                int id = Integer.parseInt(idStr);
+                HerramientaAI ai = gestorAI.buscarHerramientaPorId(id);
+                request.setAttribute("aiAEditar", ai);
+                request.getRequestDispatcher("editarIA.jsp").forward(request, response);
+                return;
+            } catch (NumberFormatException e) {
+                // Error
+            }
+        }
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+    }
+
+    private void actualizarHerramienta(HttpServletRequest request, HttpServletResponse response, gestionarAI gestorAI) throws IOException {
+        String idStr = request.getParameter("idHerramienta");
+        if (idStr != null) {
+            try {
+                int id = Integer.parseInt(idStr);
+                String nombreAI = request.getParameter("nombreAI");
+                String nombreCompetencia = request.getParameter("nombreCompetencia");
+                String descripcionNivel = request.getParameter("descripcionNivel");
+                String url = request.getParameter("url");
+                String imagen = request.getParameter("imagen");
+
+                if (imagen == null || imagen.isEmpty()) {
+                    imagen = "icon-ai.png";
+                }
+
+                gestorAI.actualizarHerramienta(id, nombreAI, nombreCompetencia, descripcionNivel, url, imagen);
+            } catch (NumberFormatException e) {
+                // Error
+            }
+        }
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+    }
+
+    private void eliminarHerramienta(HttpServletRequest request, HttpServletResponse response, gestionarAI gestorAI) throws IOException {
+        String idStr = request.getParameter("idHerramienta");
+        if (idStr != null) {
+            try {
+                int id = Integer.parseInt(idStr);
+                gestorAI.eliminarHerramienta(id);
+            } catch (NumberFormatException e) {
+                // Error
+            }
+        }
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=ias");
+    }
+
+    private void usarHerramienta(HttpServletRequest request, HttpServletResponse response, gestionarAI gestorAI) throws IOException {
+        String idStr = request.getParameter("id");
+        if (idStr != null) {
+            try {
+                int id = Integer.parseInt(idStr);
+                gestorAI.incrementarUso(id);
+                HerramientaAI ai = gestorAI.buscarHerramientaPorId(id);
+                if (ai != null && ai.getUrl() != null && !ai.getUrl().isEmpty()) {
+                    response.sendRedirect(ai.getUrl());
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                // Error
+            }
+        }
+        response.sendRedirect("estudianteUsuario.jsp");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

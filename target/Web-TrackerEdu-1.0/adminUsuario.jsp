@@ -1,3 +1,5 @@
+<%@page import="Modelo.gestionarAI"%>
+<%@page import="Modelo.HerramientaAI"%>
 <%@include file="lib/header.jsp" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="Modelo.Usuario" %>
@@ -7,7 +9,10 @@
     String filtroParam = request.getParameter("filtro");
     String tabParam = request.getParameter("tab");
 
-    boolean mostrarUsuarios = (filtroParam != null || "usuarios".equals(tabParam));
+    boolean esReportes = "reportes".equals(tabParam) || (tabParam == null && filtroParam == null);
+    boolean esUsuarios = "usuarios".equals(tabParam) || filtroParam != null;
+    boolean esGrupos = "grupos".equals(tabParam);
+    boolean esIAs = "ias".equals(tabParam);
 %>
 
 <div class="container-fluid py-4 pb-5">
@@ -18,16 +23,16 @@
                 <div class="card-body">
                     <p class="text-body-secondary small mb-2 fw-semibold">Secciones</p>
                     <div class="nav nav-pills flex-lg-column gap-2" id="menu" role="tablist">
-                        <button class="nav-link <%= !mostrarUsuarios ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#reportes" type="button" role="tab">
+                        <button class="nav-link <%= esReportes ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#reportes" type="button" role="tab">
                             <i class="bi bi-flag me-2"></i>Gestionar reportes
                         </button>
-                        <button class="nav-link <%= mostrarUsuarios ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#usuarios" type="button" role="tab">
+                        <button class="nav-link <%= esUsuarios ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#usuarios" type="button" role="tab">
                             <i class="bi bi-people me-2"></i>Gestionar usuarios
                         </button>
-                        <button class="nav-link text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#grupos" type="button" role="tab">
+                        <button class="nav-link <%= esGrupos ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#grupos" type="button" role="tab">
                             <i class="bi bi-diagram-3 me-2"></i>Gestionar grupos
                         </button>
-                        <button class="nav-link text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#ias" type="button" role="tab">
+                        <button class="nav-link <%= esIAs ? "active" : "" %> text-start rounded-pill px-3" data-bs-toggle="pill" data-bs-target="#ias" type="button" role="tab">
                             <i class="bi bi-robot me-2"></i>Gestionar IAs
                         </button>
                     </div>
@@ -38,7 +43,8 @@
         <main class="col-lg-9 col-xl-10">
             <div class="tab-content">
 
-                <section class="tab-pane fade <%= !mostrarUsuarios ? "show active" : "" %>" id="reportes" role="tabpanel">
+                <!-- SECCIÓN REPORTES -->
+                <section class="tab-pane fade <%= esReportes ? "show active" : "" %>" id="reportes" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestionReportes.jpg" class="object-fit-cover opacity-50" alt="Reportes">
@@ -99,7 +105,8 @@
                     </div>
                 </section>
 
-                <section class="tab-pane fade <%= mostrarUsuarios ? "show active" : "" %>" id="usuarios" role="tabpanel">
+                <!-- SECCIÓN USUARIOS -->
+                <section class="tab-pane fade <%= esUsuarios ? "show active" : "" %>" id="usuarios" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestion-usuarios.jpg" class="object-fit-cover opacity-50" alt="Usuarios">
@@ -168,7 +175,8 @@
                     </div>
                 </section>
 
-                <section class="tab-pane fade" id="grupos" role="tabpanel">
+                <!-- SECCIÓN GRUPOS -->
+                <section class="tab-pane fade <%= esGrupos ? "show active" : "" %>" id="grupos" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestionar-grupos.jpg" class="object-fit-cover opacity-50" alt="Grupos">
@@ -217,7 +225,8 @@
                     </div>
                 </section>
 
-                <section class="tab-pane fade" id="ias" role="tabpanel">
+                <!-- SECCIÓN IAS -->
+                <section class="tab-pane fade <%= esIAs ? "show active" : "" %>" id="ias" role="tabpanel">
                     <div class="card text-bg-dark border-0 shadow-sm mb-4 overflow-hidden rounded-4">
                         <div class="ratio ratio-21x9">
                             <img src="imagenes/gestionar-ias.jpg" class="object-fit-cover opacity-50" alt="Inteligencias artificiales">
@@ -228,73 +237,74 @@
                         </div>
                     </div>
 
-                    <div class="text-center mb-4">
-                        <a href="registroIA.jsp" class="btn btn-primary rounded-pill px-5 fw-bold text-decoration-none d-inline-flex align-items-center justify-content-center">
-                            <i class="bi bi-cpu me-2"></i>Registrar IA
-                        </a>
-                    </div>
+                    <form action="ServletUsuarios" method="GET" class="row g-2 align-items-center mb-4">
+                        <input type="hidden" name="accion" value="panelAdmin">
+                        <input type="hidden" name="tab" value="ias">
+                        
+                        <div class="col-auto">
+                            <div class="input-group" style="width: 380px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="search" class="form-control" name="filtroIA" value="<%= request.getParameter("filtroIA") != null ? request.getParameter("filtroIA") : "" %>" placeholder="Buscar por nombre o nivel (Ej. Avanzado)">
+                                <button type="submit" class="btn btn-primary px-3">Filtrar</button>
+                            </div>
+                        </div>
+
+                        <div class="col-auto ms-auto">
+                            <a href="registroIA.jsp" class="btn btn-primary rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center py-2">
+                                <i class="bi bi-cpu me-1"></i>Registrar IA
+                            </a>
+                        </div>
+                    </form>
 
                     <div class="row g-4">
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden border-top border-primary border-4">
+                        <%
+                            ArrayList<HerramientaAI> listaIAsAdmin = (ArrayList<HerramientaAI>) request.getAttribute("listaIAsAdmin");
+                            if (listaIAsAdmin == null) {
+                                gestionarAI gestorAIAdmin = (gestionarAI) application.getAttribute("gestorAIInstance");
+                                if (gestorAIAdmin == null) {
+                                    gestorAIAdmin = new gestionarAI();
+                                    application.setAttribute("gestorAIInstance", gestorAIAdmin);
+                                }
+                                String filtroIA = request.getParameter("filtroIA");
+                                if (filtroIA != null && !filtroIA.trim().isEmpty()) {
+                                    listaIAsAdmin = gestorAIAdmin.buscarHerramientas(filtroIA);
+                                } else {
+                                    listaIAsAdmin = gestorAIAdmin.obtenerTodasLasHerramientas();
+                                }
+                            }
+
+                            if (listaIAsAdmin != null && !listaIAsAdmin.isEmpty()) {
+                                for (HerramientaAI ia : listaIAsAdmin) {
+                        %>
+                        <div class="col-md-6 col-xl-4 d-flex align-items-stretch">
+                            <div class="card h-100 w-100 shadow-sm border-0 rounded-4 overflow-hidden border-top border-primary border-4 d-flex flex-column justify-content-between">
                                 <div class="card-body p-4">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title fw-bold">ChatGPT</h5>
-                                        <span class="badge text-bg-success">En línea</span>
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <% if (ia.getImagen() != null && !ia.getImagen().isEmpty()) { %>
+                                            <img src="imagenes/<%= ia.getImagen() %>" alt="<%= ia.getNombreAI() %>" width="36" height="36" class="img-fluid object-fit-contain">
+                                        <% } %>
+                                        <h5 class="card-title fw-bold mb-0"><%= ia.getNombreAI() %></h5>
                                     </div>
-                                    <p class="text-body-secondary small mb-4">Ideal para redacción de ensayos, explicación de conceptos generales y tutoría conversacional.</p>
-                                    <div class="d-flex justify-content-between align-items-center text-muted small">
-                                        <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=1" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
-                                    </div>
+                                    <p class="text-body-secondary small mb-1"><strong>Competencia:</strong> <%= ia.getNombreCompetencia() %></p>
+                                    <p class="text-body-secondary small mb-2"><strong>Nivel:</strong> <%= ia.getDescripcionNivel() %></p>
+                                    <% if (ia.getUrl() != null && !ia.getUrl().isEmpty()) { %>
+                                        <p class="small mb-3"><a href="<%= ia.getUrl() %>" target="_blank" class="text-decoration-none text-primary"><i class="bi bi-link-45deg"></i> Enlace web</a></p>
+                                    <% } %>
+                                </div>
+                                <div class="card-footer bg-white border-0 pb-4 px-4 pt-2 d-flex justify-content-between align-items-center text-muted small border-top">
+                                    <span>Estado: Activo</span>
+                                    <a href="ServletHerramientaIA?accion=cargarEditar&id=<%= ia.getIdHerramienta() %>" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden border-top border-success border-4">
-                                <div class="card-body p-4">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title fw-bold">Gemini</h5>
-                                        <span class="badge text-bg-success">En línea</span>
-                                    </div>
-                                    <p class="text-body-secondary small mb-4">Potente para análisis multimodal, síntesis rápida de documentos y búsqueda en tiempo real.</p>
-                                    <div class="d-flex justify-content-between align-items-center text-muted small">
-                                        <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=2" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
-                                    </div>
-                                </div>
+                        <% 
+                                }
+                            } else { 
+                        %>
+                            <div class="col-12 text-center py-4">
+                                <p class="text-muted fw-semibold">No se encontraron IAs que coincidan con la búsqueda.</p>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden border-top border-warning border-4">
-                                <div class="card-body p-4">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title fw-bold">DeepSeek</h5>
-                                        <span class="badge text-bg-success">En línea</span>
-                                    </div>
-                                    <p class="text-body-secondary small mb-4">Excelente para programación avanzada, resolución de algoritmos complejos y lógica matemática.</p>
-                                    <div class="d-flex justify-content-between align-items-center text-muted small">
-                                        <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=3" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden border-top border-secondary border-4">
-                                <div class="card-body p-4">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title fw-bold">Notebook</h5>
-                                        <span class="badge text-bg-success">En línea</span>
-                                    </div>
-                                    <p class="text-body-secondary small mb-4">Interactúa directamente con tus propios documentos, PDFs y notas de estudio sin riesgo de alucinaciones.</p>
-                                    <div class="d-flex justify-content-between align-items-center text-muted small">
-                                        <span>Estado: Activo</span>
-                                        <a href="editarIA.jsp?id=4" class="btn btn-sm btn-outline-primary rounded-pill px-3">Configurar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                 </section>
 

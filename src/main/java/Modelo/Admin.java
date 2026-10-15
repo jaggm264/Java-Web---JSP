@@ -37,8 +37,8 @@ public class Admin extends Usuario {
         gestorGrupos.crearGrupo(nombreGrupo);
     }
 
-    public void agregarIA(String nombreAI, String competencia, String nivel) {
-        gestorAIs.crearHerramienta(nombreAI, competencia, nivel);
+    public void agregarIA(String nombreAI, String competencia, String nivel, String url, String imagen) {
+        gestorAIs.crearHerramienta(nombreAI, competencia, nivel, url, imagen);
     }
 
     public Estudiante crearEstudiante(String nombre, String correo, String clave, String doc) {

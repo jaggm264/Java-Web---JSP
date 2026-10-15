@@ -6,6 +6,7 @@ package Servlets;
 
 import Modelo.gestionarUsuarios;
 import Modelo.Usuario;
+import Modelo.gestionarAI;
 import java.io.IOException;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -97,6 +98,19 @@ public class ServletUsuarios extends HttpServlet {
 
     private void mostrarPanelAdmin(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws ServletException, IOException {
         request.setAttribute("listaUsuarios", gestorUsuarios.obtenerTodosLosUsuarios());
+        ServletContext context = request.getServletContext();
+        gestionarAI gestorAI = (gestionarAI) context.getAttribute("gestorAIInstance");
+        if (gestorAI == null) {
+            gestorAI = new gestionarAI();
+            context.setAttribute("gestorAIInstance", gestorAI);
+        }
+        
+        String filtroIA = request.getParameter("filtroIA");
+        if (filtroIA != null && !filtroIA.trim().isEmpty()) {
+            request.setAttribute("listaIAsAdmin", gestorAI.buscarHerramientas(filtroIA));
+        } else {
+            request.setAttribute("listaIAsAdmin", gestorAI.obtenerTodasLasHerramientas());
+        }
         request.getRequestDispatcher("adminUsuario.jsp").forward(request, response);
     }
 
@@ -111,7 +125,7 @@ public class ServletUsuarios extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String contraseña = request.getParameter("contraseña");
-        String confirmarContraseña = request.getParameter("confirmarContraseña"); // Capturamos la confirmación
+        String confirmarContraseña = request.getParameter("confirmarContraseña");
         String documento = request.getParameter("documento");
         String rol = request.getParameter("tipoRol");
 
@@ -130,8 +144,7 @@ public class ServletUsuarios extends HttpServlet {
         } else if ("profesor".equalsIgnoreCase(rol) || "docente".equalsIgnoreCase(rol)) {
             gestorUsuarios.crearDocente(nombre, correo, contraseña, documento);
         }
-
-        response.sendRedirect("ServletUsuarios?accion=panelAdmin");
+        response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
 
     private void actualizar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws IOException {
@@ -145,7 +158,6 @@ public class ServletUsuarios extends HttpServlet {
         gestorUsuarios.actualizarUsuario(idUsuario, nombre, correo, documento, contraseña, rol);
         response.sendRedirect("ServletUsuarios?accion=panelAdmin&tab=usuarios");
     }
-
     
     private void buscar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws ServletException, IOException {
         String filtro = request.getParameter("filtro");
@@ -153,6 +165,7 @@ public class ServletUsuarios extends HttpServlet {
         request.setAttribute("listaUsuarios", resultados);
         request.getRequestDispatcher("adminUsuario.jsp").forward(request, response);
     }
+    
     private void eliminar(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws IOException {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
         gestorUsuarios.eliminarUsuario(idUsuario);
