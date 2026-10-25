@@ -8,7 +8,7 @@
                     <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-plus me-2"></i>Registrar Nuevo Reporte</h5>
                 </div>
                 <div class="card-body p-4">
-                    <form action="ReporteServlet" method="POST">
+                    <form action="ServletReportes" method="POST">
                         <input type="hidden" name="accion" value="crear">
                         
                         <div class="mb-3">
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="d-flex flex-wrap gap-2">
-                            <a href="adminUsuario.jsp" class="btn btn-secondary rounded-pill px-4">Cancelar</a>
+                            <a href="ServletUsuarios?accion=panelAdmin&tab=reportes" class="btn btn-secondary rounded-pill px-4">Cancelar</a>
                             <button type="submit" class="btn btn-danger rounded-pill px-4">Guardar Reporte</button>
                         </div>
                     </form>

@@ -1,3 +1,5 @@
+<%@page import="Modelo.gestionarReporte"%>
+<%@page import="Modelo.Reporte"%>
 <%@page import="Modelo.Grupo"%>
 <%@page import="Modelo.gestionarGrupo"%>
 <%@page import="Modelo.gestionarAI"%>
@@ -57,12 +59,23 @@
                         </div>
                     </div>
 
+                    <%
+                        gestionarReporte gestorReportesAdmin = (gestionarReporte) application.getAttribute("gestorReporteInstance");
+                        if (gestorReportesAdmin == null) {
+                            gestorReportesAdmin = new gestionarReporte();
+                            gestorReportesAdmin.crearReporte("Reporte - Equipo 1", "Detalles iniciales del reporte...");
+                            application.setAttribute("gestorReporteInstance", gestorReportesAdmin);
+                        }
+                        ArrayList<Reporte> listaReportesAdmin = gestorReportesAdmin.obtenerTodosLosReportes();
+                        int totalReportes = (listaReportesAdmin != null) ? listaReportesAdmin.size() : 0;
+                    %>
+
                     <div class="row g-3 mb-4">
                         <div class="col-12">
                             <div class="card border-success border-2 text-center rounded-4 shadow-sm">
                                 <div class="card-body">
                                     <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
-                                    <h3 class="mb-0 fw-bold">0</h3>
+                                    <h3 class="mb-0 fw-bold"><%= totalReportes %></h3>
                                     <small class="text-body-secondary">Reportes Creados</small>
                                 </div>
                             </div>
@@ -83,24 +96,32 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Reporte</th>
-                                        <th>Autor</th>
-                                        <th>Uso de IA</th>
-                                        <th>Estado</th>
+                                        <th>Nombre del Reporte</th>
+                                        <th>Contenido / Detalles</th>
                                         <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <%
+                                        if (listaReportesAdmin != null && !listaReportesAdmin.isEmpty()) {
+                                            for (Reporte rep : listaReportesAdmin) {
+                                    %>
                                     <tr>
-                                        <td>101</td>
-                                        <td>Reporte - Equipo 1</td>
-                                        <td><img src="imagenes/icon-user.png" width="32" height="32" class="rounded-circle me-2 object-fit-cover" alt="Admin">Andrés Ruiz</td>
-                                        <td><span class="badge text-bg-danger">Alta</span></td>
-                                        <td><span class="badge text-bg-success">Enviado</span></td>
+                                        <td><%= rep.getIdReporte() %></td>
+                                        <td class="fw-semibold"><%= rep.getNombreReporte() %></td>
+                                        <td class="text-muted"><%= rep.getContenido() %></td>
                                         <td class="text-center">
-                                            <a href="editarReporte.jsp?id=101" class="btn btn-sm btn-outline-primary rounded-pill px-3 text-decoration-none">Editar</a>
+                                            <a href="ServletReportes?accion=cargarEditar&id=<%= rep.getIdReporte() %>" class="btn btn-sm btn-outline-primary rounded-pill px-3 text-decoration-none">Editar</a>
                                         </td>
                                     </tr>
+                                    <% 
+                                            }
+                                        } else { 
+                                    %>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4 text-muted fw-semibold">No hay reportes registrados en el sistema.</td>
+                                        </tr>
+                                    <% } %>
                                 </tbody>
                             </table>
                         </div>

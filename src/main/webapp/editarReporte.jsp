@@ -1,5 +1,11 @@
 <%@include file="lib/header.jsp" %>
-
+<%@page import="Modelo.Reporte" %>
+<%
+    Reporte reporte = (Reporte) request.getAttribute("reporteAEditar");
+    if (reporte == null) {
+        reporte = new Reporte(101, "Reporte de Prueba", "Contenido de prueba...");
+    }
+%>
 <div class="container-fluid py-4 pb-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -9,7 +15,7 @@
                     <span class="badge bg-light text-dark px-3 py-2 rounded-pill">ID: 101</span>
                 </div>
                 <div class="card-body p-4">
-                    <form action="ReporteServlet" method="POST">
+                    <form action="ServletReportes" method="POST">
                         <input type="hidden" name="idReporte" value="101">
                         
                         <div class="mb-3">
