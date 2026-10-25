@@ -1,3 +1,5 @@
+<%@page import="Modelo.Grupo"%>
+<%@page import="Modelo.gestionarGrupo"%>
 <%@page import="Modelo.gestionarAI"%>
 <%@page import="Modelo.HerramientaAI"%>
 <%@include file="lib/header.jsp" %>
@@ -188,41 +190,95 @@
                         </div>
                     </div>
 
-                    <div class="text-end mb-4">
-                        <a href="registroGrupo.jsp" class="btn btn-success rounded-pill px-4 fw-bold text-decoration-none d-inline-flex align-items-center">
-                            <i class="bi bi-plus-circle me-1"></i>Crear grupo
-                        </a>
-                    </div>
+                    <form action="ServletUsuarios" method="GET" class="row g-2 align-items-center mb-4">
+                        <input type="hidden" name="accion" value="panelAdmin">
+                        <input type="hidden" name="tab" value="grupos">
+
+                        <div class="col-auto">
+                            <div class="input-group" style="width: 420px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="search" class="form-control" name="filtroGrupo" value="<%= request.getParameter("filtroGrupo") != null ? request.getParameter("filtroGrupo") : "" %>" placeholder="Buscar por grupo o docente">
+                                <button type="submit" class="btn btn-success px-3">Filtrar</button>
+                            </div>
+                        </div>
+
+                        <div class="col-auto ms-auto">
+                            <a href="ServletGrupos?accion=cargarRegistro" class="btn btn-success rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center py-2">
+                                <i class="bi bi-plus-circle me-1"></i>Crear grupo
+                            </a>
+                        </div>
+                    </form>
 
                     <div class="row g-4">
+                        <%
+                            ArrayList<Grupo> listaGruposAdmin = (ArrayList<Grupo>) request.getAttribute("listaGruposAdmin");
+                            if (listaGruposAdmin == null) {
+                                gestionarGrupo gestorGruposAdmin = (gestionarGrupo) application.getAttribute("gestorGrupoInstance");
+                                if (gestorGruposAdmin == null) {
+                                    gestorGruposAdmin = new gestionarGrupo();
+                                    application.setAttribute("gestorGrupoInstance", gestorGruposAdmin);
+                                }
+                                String filtroGrupo = request.getParameter("filtroGrupo");
+                                if (filtroGrupo != null && !filtroGrupo.trim().isEmpty()) {
+                                    listaGruposAdmin = gestorGruposAdmin.buscarGrupos(filtroGrupo);
+                                } else {
+                                    listaGruposAdmin = gestorGruposAdmin.obtenerTodosLosGrupos();
+                                }
+                            }
+
+                            if (listaGruposAdmin != null && !listaGruposAdmin.isEmpty()) {
+                                for (Grupo g : listaGruposAdmin) {
+                                    int inscritos = 0;
+                                    if (g.getIntegrante1() != null && !g.getIntegrante1().isEmpty()) inscritos++;
+                                    if (g.getIntegrante2() != null && !g.getIntegrante2().isEmpty()) inscritos++;
+                                    if (g.getIntegrante3() != null && !g.getIntegrante3().isEmpty()) inscritos++;
+                                    if (g.getIntegrante4() != null && !g.getIntegrante4().isEmpty()) inscritos++;
+                                    int porcentaje = (inscritos * 100) / 4;
+                        %>
                         <div class="col-lg-6">
                             <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title fw-bold mb-3">Equipo 1</h5>
+                                    <h5 class="card-title fw-bold mb-3"><%= g.getNombreGrupo() %></h5>
 
                                     <div class="p-2 mb-3 bg-light rounded-3 d-flex align-items-center gap-2 border">
                                         <i class="bi bi-person-badge text-success fs-5"></i>
                                         <span class="small fw-semibold text-secondary">Docente encargado:</span>
-                                        <span class="small text-dark fw-bold">Prof. Carlos Gómez</span>
+                                        <span class="small text-dark fw-bold"><%= g.getNombreDocente() != null && !g.getNombreDocente().isEmpty() ? g.getNombreDocente() : "Sin asignar" %></span>
                                     </div>
 
-                                    <small class="text-muted fw-semibold">Capacidad: 1 docente + 4 estudiantes (0 de 4 inscritos)</small>
+                                    <small class="text-muted fw-semibold">Capacidad: 1 docente + 4 estudiantes (<%= inscritos %> de 4 inscritos)</small>
                                     <div class="progress mb-3 mt-1" style="height: 10px; border-radius: 5px;">
-                                        <div class="progress-bar bg-success rounded-pill w-0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: <%= porcentaje %>%;" aria-valuenow="<%= porcentaje %>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
 
-                                    <button class="btn btn-sm btn-outline-success rounded-pill px-3" data-bs-toggle="collapse" data-bs-target="#miembrosEquipo1">Ver miembros</button>
-                                    <div class="collapse mt-3" id="miembrosEquipo1">
+                                    <button class="btn btn-sm btn-outline-success rounded-pill px-3" data-bs-toggle="collapse" data-bs-target="#miembrosEquipo<%= g.getIdGrupo() %>">Ver miembros</button>
+                                    <div class="collapse mt-3" id="miembrosEquipo<%= g.getIdGrupo() %>">
                                         <ul class="list-group rounded-3">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center small text-muted">Sin estudiantes registrados aún</li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center small text-secondary">1. <%= g.getIntegrante1() != null && !g.getIntegrante1().isEmpty() ? g.getIntegrante1() : "Sin asignar" %></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center small text-secondary">2. <%= g.getIntegrante2() != null && !g.getIntegrante2().isEmpty() ? g.getIntegrante2() : "Sin asignar" %></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center small text-secondary">3. <%= g.getIntegrante3() != null && !g.getIntegrante3().isEmpty() ? g.getIntegrante3() : "Sin asignar" %></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center small text-secondary">4. <%= g.getIntegrante4() != null && !g.getIntegrante4().isEmpty() ? g.getIntegrante4() : "Sin asignar" %></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-white border-0 pb-4 px-4 d-flex justify-content-end">
-                                    <a href="editarGrupo.jsp" class="btn btn-sm btn-outline-primary rounded-pill px-3"><i class="bi bi-trash"></i> Editar</a>
+                                <div class="card-footer bg-white border-0 pb-4 px-4 d-flex justify-content-between align-items-center">
+                                    <a href="ServletGrupos?accion=cargarEditar&id=<%= g.getIdGrupo() %>" class="btn btn-sm btn-outline-primary rounded-pill px-3"><i class="bi bi-pencil"></i> Editar</a>
+                                    <form action="ServletGrupos" method="POST" class="d-inline">
+                                        <input type="hidden" name="accion" value="eliminar">
+                                        <input type="hidden" name="idGrupo" value="<%= g.getIdGrupo() %>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('¿Estás seguro de eliminar este grupo?');"><i class="bi bi-trash"></i> Eliminar</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
+                        <% 
+                                }
+                            } else { 
+                        %>
+                            <div class="col-12 text-center py-4">
+                                <p class="text-muted fw-semibold">No se encontraron grupos que coincidan con la búsqueda.</p>
+                            </div>
+                        <% } %>
                     </div>
                 </section>
 

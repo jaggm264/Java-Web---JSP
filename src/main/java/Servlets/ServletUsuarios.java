@@ -7,6 +7,7 @@ package Servlets;
 import Modelo.gestionarUsuarios;
 import Modelo.Usuario;
 import Modelo.gestionarAI;
+import Modelo.gestionarGrupo;
 import java.io.IOException;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -99,18 +100,31 @@ public class ServletUsuarios extends HttpServlet {
     private void mostrarPanelAdmin(HttpServletRequest request, HttpServletResponse response, gestionarUsuarios gestorUsuarios) throws ServletException, IOException {
         request.setAttribute("listaUsuarios", gestorUsuarios.obtenerTodosLosUsuarios());
         ServletContext context = request.getServletContext();
+        
         gestionarAI gestorAI = (gestionarAI) context.getAttribute("gestorAIInstance");
         if (gestorAI == null) {
             gestorAI = new gestionarAI();
             context.setAttribute("gestorAIInstance", gestorAI);
         }
-        
         String filtroIA = request.getParameter("filtroIA");
         if (filtroIA != null && !filtroIA.trim().isEmpty()) {
             request.setAttribute("listaIAsAdmin", gestorAI.buscarHerramientas(filtroIA));
         } else {
             request.setAttribute("listaIAsAdmin", gestorAI.obtenerTodasLasHerramientas());
         }
+
+        gestionarGrupo gestorGrupo = (gestionarGrupo) context.getAttribute("gestorGrupoInstance");
+        if (gestorGrupo == null) {
+            gestorGrupo = new gestionarGrupo();
+            context.setAttribute("gestorGrupoInstance", gestorGrupo);
+        }
+        String filtroGrupo = request.getParameter("filtroGrupo");
+        if (filtroGrupo != null && !filtroGrupo.trim().isEmpty()) {
+            request.setAttribute("listaGruposAdmin", gestorGrupo.buscarGrupos(filtroGrupo));
+        } else {
+            request.setAttribute("listaGruposAdmin", gestorGrupo.obtenerTodosLosGrupos());
+        }
+
         request.getRequestDispatcher("adminUsuario.jsp").forward(request, response);
     }
 

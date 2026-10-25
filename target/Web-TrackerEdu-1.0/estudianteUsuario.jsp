@@ -4,6 +4,8 @@
 <%@page import="Modelo.gestionarAI" %>
 <%@page import="Modelo.HerramientaAI" %>
 <%@page import="java.util.ArrayList" %>
+<%@page import="Modelo.gestionarGrupo" %>
+<%@page import="Modelo.Grupo" %>
 
 <%
     Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioLogueado");
@@ -31,14 +33,24 @@
             totalUsosGlobal += h.getUsos();
         }
     }
+    
+    gestionarGrupo gestorGEstudiante = (gestionarGrupo) application.getAttribute("gestorGrupoInstance");
+    Grupo grupoEstudiante = null;
+    if (gestorGEstudiante != null && estudiante != null) {
+        for (Grupo g : gestorGEstudiante.obtenerTodosLosGrupos()) {
+            if (g.tieneIntegrante(estudiante.getNombre())) {
+                grupoEstudiante = g;
+                break;
+            }
+        }
+    }
+    String nombreGrupoEstudiante = (grupoEstudiante != null) ? grupoEstudiante.getNombreGrupo() : "Sin asignar a ningún grupo";
 %>
-
 <div class="container my-5">
 
     <div class="text-center mb-4">
         <h1 class="fw-bold">Bienvenid@, <%= nombreEstudiante %></h1>
-        <p class="fs-5 text-secondary">Querido estudiante, pertenece al grupo:</p>
-    </div>
+        <p class="fs-5 text-secondary">Querido estudiante, pertenece al grupo: <span class="fw-bold text-dark"><%= nombreGrupoEstudiante %></span></p>    </div>
     
     <div class="mb-5">
         <img src="imagenes/banner-estudiante.jpg" alt="Banner del Estudiante" class="w-100 rounded-4 shadow-sm img-fluid" style="max-height: 280px; object-fit: cover;">

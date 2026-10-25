@@ -1,5 +1,6 @@
 Modelo\NivelDeCompetenciaSugerencia.class
 Modelo\RegistroDeUso.class
+Servlets\ServletGrupos.class
 Modelo\Reporte.class
 Modelo\gestionarUsuarios.class
 Modelo\Usuario.class
