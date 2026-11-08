@@ -5,6 +5,7 @@
 package Servlets;
 
 import Modelo.HerramientaAI;
+import Modelo.Usuario;
 import Modelo.gestionarAI;
 import java.io.IOException;
 import jakarta.servlet.ServletContext;
@@ -13,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -145,7 +147,14 @@ public class ServletHerramientaIA extends HttpServlet {
         if (idStr != null) {
             try {
                 int id = Integer.parseInt(idStr);
-                gestorAI.incrementarUso(id);
+                
+                // Capturar el nombre del estudiante logueado en la sesión para el registro individual
+                HttpSession session = request.getSession();
+                Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioLogueado");
+                String nombreEstudiante = (usuarioSesion != null) ? usuarioSesion.getNombre() : "Anónimo";
+                
+                gestorAI.registrarUsoIndividual(id, nombreEstudiante);
+                
                 HerramientaAI ai = gestorAI.buscarHerramientaPorId(id);
                 if (ai != null && ai.getUrl() != null && !ai.getUrl().isEmpty()) {
                     response.sendRedirect(ai.getUrl());

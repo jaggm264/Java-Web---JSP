@@ -14,6 +14,7 @@ public class gestionarAI {
 
     private ArrayList<HerramientaAI> listaHerramientas;
     private int contadorIdHerramienta;
+    private ArrayList<String[]> historialUsos = new ArrayList<>();
 
     public gestionarAI() {
         this.listaHerramientas = new ArrayList<>();
@@ -139,5 +140,45 @@ public class gestionarAI {
         if (herramienta != null) {
             herramienta.incrementarUsos();
         }
+    }
+
+    public void registrarUsoIndividual(int idHerramienta, String nombreEstudiante) {
+        if (nombreEstudiante != null && !nombreEstudiante.isEmpty() && !nombreEstudiante.equalsIgnoreCase("Anónimo")) {
+            historialUsos.add(new String[]{nombreEstudiante.trim(), String.valueOf(idHerramienta)});
+            incrementarUso(idHerramienta); // Incrementa el global de la herramienta
+        }
+    }
+
+    public int obtenerUsosPorEstudianteYHerramienta(String nombreEstudiante, int idHerramienta) {
+        int count = 0;
+        for (String[] uso : historialUsos) {
+            if (uso[0].equalsIgnoreCase(nombreEstudiante.trim()) && uso[1].equals(String.valueOf(idHerramienta))) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int obtenerUsosTotalesPorEstudiante(String nombreEstudiante) {
+        int count = 0;
+        for (String[] uso : historialUsos) {
+            if (uso[0].equalsIgnoreCase(nombreEstudiante.trim())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public String obtenerHerramientaFavoritaPorEstudiante(String nombreEstudiante, ArrayList<HerramientaAI> listaIAs) {
+        String favorita = "Ninguna";
+        int maxUsos = -1;
+        for (HerramientaAI ia : listaIAs) {
+            int usosEst = obtenerUsosPorEstudianteYHerramienta(nombreEstudiante, ia.getIdHerramienta());
+            if (usosEst > maxUsos) {
+                maxUsos = usosEst;
+                favorita = ia.getNombreAI();
+            }
+        }
+        return maxUsos > 0 ? favorita : "Ninguna";
     }
 }

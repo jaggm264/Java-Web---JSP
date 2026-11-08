@@ -1,9 +1,11 @@
 Modelo\NivelDeCompetenciaSugerencia.class
 Modelo\RegistroDeUso.class
 Servlets\ServletGrupos.class
+Modelo\gestionarReporte$1EstudianteMetrica.class
 Modelo\Reporte.class
 Modelo\gestionarUsuarios.class
 Modelo\Usuario.class
+Servlets\ServletReportes.class
 com\mycompany\web\trackeredu\resources\JakartaEE10Resource.class
 Modelo\Evidencia.class
 Modelo\Grupo.class

@@ -54,7 +54,9 @@ public class Admin extends Usuario {
         HerramientaAI ai = gestorAIs.buscarHerramientaPorId(idIA);
         
         if (g != null && ai != null) {
-            return gestorReportes.generarReporteUsoIA(g.getNombreGrupo(), ai.getNombreAI(), detalles);
+            String nombre = "Reporte Uso IA - Grupo: " + g.getNombreGrupo() + " (" + ai.getNombreAI() + ")";
+            String contenido = "Detalles del uso de la IA [" + ai.getNombreAI() + "] por el grupo [" + g.getNombreGrupo() + "]: " + detalles;
+            return gestorReportes.crearReporte(nombre, contenido);
         }
         return null;
     }

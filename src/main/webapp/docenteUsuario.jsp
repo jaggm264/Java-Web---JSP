@@ -125,7 +125,7 @@
 
                     <div class="text-center pt-3 border-top mt-3">
                         <h6 class="fw-bold text-secondary mb-2">Informe de IA:</h6>
-                        <a href="#" class="btn btn-outline-primary fw-bold px-4 rounded-pill shadow-sm">Ver Informe General</a>
+                        <a href="ServletReportes?accion=verInformeDocente&grupo=<%= nombreGrupoDocente %>" class="btn btn-outline-primary fw-bold px-4 rounded-pill shadow-sm">Ver Informe General</a>
                     </div>
                 </div>
             </div>

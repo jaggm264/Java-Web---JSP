@@ -8,6 +8,7 @@ import Modelo.gestionarUsuarios;
 import Modelo.Usuario;
 import Modelo.gestionarAI;
 import Modelo.gestionarGrupo;
+import Modelo.gestionarReporte;
 import java.io.IOException;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -123,6 +124,18 @@ public class ServletUsuarios extends HttpServlet {
             request.setAttribute("listaGruposAdmin", gestorGrupo.buscarGrupos(filtroGrupo));
         } else {
             request.setAttribute("listaGruposAdmin", gestorGrupo.obtenerTodosLosGrupos());
+        }
+        
+        gestionarReporte gestorReportes = (gestionarReporte) context.getAttribute("gestorReporteInstance");
+        if (gestorReportes == null) {
+            gestorReportes = new gestionarReporte();
+            context.setAttribute("gestorReporteInstance", gestorReportes);
+        }
+        String filtroReporte = request.getParameter("filtroReporte");
+        if (filtroReporte != null && !filtroReporte.trim().isEmpty()) {
+            request.setAttribute("listaReportesAdmin", gestorReportes.buscarReportes(filtroReporte));
+        } else {
+            request.setAttribute("listaReportesAdmin", gestorReportes.obtenerTodosLosReportes());
         }
 
         request.getRequestDispatcher("adminUsuario.jsp").forward(request, response);

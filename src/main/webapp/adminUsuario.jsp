@@ -55,7 +55,7 @@
                         </div>
                         <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
                             <h2 class="card-title fw-bold"><i class="bi bi-flag-fill text-danger me-2"></i>Gestionar reportes</h2>
-                            <p class="card-text text-light">Revisa, prioriza y envia informes para todas las personas.</p>
+                            <p class="card-text text-light">Revisa, prioriza y genera informes automáticos para los grupos.</p>
                         </div>
                     </div>
 
@@ -63,11 +63,17 @@
                         gestionarReporte gestorReportesAdmin = (gestionarReporte) application.getAttribute("gestorReporteInstance");
                         if (gestorReportesAdmin == null) {
                             gestorReportesAdmin = new gestionarReporte();
-                            gestorReportesAdmin.crearReporte("Reporte - Equipo 1", "Detalles iniciales del reporte...");
                             application.setAttribute("gestorReporteInstance", gestorReportesAdmin);
                         }
-                        ArrayList<Reporte> listaReportesAdmin = gestorReportesAdmin.obtenerTodosLosReportes();
-                        int totalReportes = (listaReportesAdmin != null) ? listaReportesAdmin.size() : 0;
+
+                        String filtroReporte = request.getParameter("filtroReporte");
+                        ArrayList<Reporte> listaReportesAdmin;
+                        if (filtroReporte != null && !filtroReporte.trim().isEmpty()) {
+                            listaReportesAdmin = gestorReportesAdmin.buscarReportes(filtroReporte);
+                        } else {
+                            listaReportesAdmin = gestorReportesAdmin.obtenerTodosLosReportes();
+                        }
+                        int totalReportes = listaReportesAdmin.size();
                     %>
 
                     <div class="row g-3 mb-4">
@@ -76,29 +82,41 @@
                                 <div class="card-body">
                                     <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
                                     <h3 class="mb-0 fw-bold"><%= totalReportes %></h3>
-                                    <small class="text-body-secondary">Reportes Creados</small>
+                                    <small class="text-body-secondary">Reportes Totales en Archivo</small>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-0 rounded-4">
-                        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                            <h5 class="mb-0 fw-bold">Listado de reportes</h5>
-                            <div>
-                                <a href="registroReporte.jsp" class="btn btn-danger btn-sm rounded-pill px-3 text-decoration-none">
-                                    <i class="bi bi-plus-lg me-1"></i>Nuevo reporte
-                                </a>
+                    <!-- Formulario de Búsqueda Responsivo por ID o Nombre de Grupo -->
+                    <form action="ServletUsuarios" method="GET" class="row g-3 align-items-center mb-5">
+                        <input type="hidden" name="accion" value="panelAdmin">
+                        <input type="hidden" name="tab" value="reportes">
+
+                        <div class="col-12 col-md-auto">
+                            <div class="input-group" style="width: 100%; max-width: 420px;">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="search" class="form-control" name="filtroReporte" value="<%= filtroReporte != null ? filtroReporte : "" %>" placeholder="Buscar por ID o nombre de grupo...">
+                                <button type="submit" class="btn btn-danger px-3">Filtrar</button>
                             </div>
                         </div>
+
+                        <div class="col-12 col-md-auto ms-md-auto">
+                            <a href="ServletReportes?accion=generarAutomaticos" class="btn btn-success rounded-pill px-4 fw-bold text-decoration-none d-flex align-items-center py-2 shadow-sm">
+                                <i class="bi bi-magic me-1"></i>Generar Automáticos
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="card shadow-sm border-0 rounded-4 mb-5">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>#</th>
+                                        <th class="ps-4"># ID</th>
                                         <th>Nombre del Reporte</th>
                                         <th>Contenido / Detalles</th>
-                                        <th class="text-center">Editar</th>
+                                        <th class="text-center pe-4">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,11 +125,29 @@
                                             for (Reporte rep : listaReportesAdmin) {
                                     %>
                                     <tr>
-                                        <td><%= rep.getIdReporte() %></td>
-                                        <td class="fw-semibold"><%= rep.getNombreReporte() %></td>
-                                        <td class="text-muted"><%= rep.getContenido() %></td>
-                                        <td class="text-center">
-                                            <a href="ServletReportes?accion=cargarEditar&id=<%= rep.getIdReporte() %>" class="btn btn-sm btn-outline-primary rounded-pill px-3 text-decoration-none">Editar</a>
+                                        <td class="ps-4 fw-bold text-secondary"><%= rep.getIdReporte() %></td>
+                                        <td class="fw-semibold text-dark"><%= rep.getNombreReporte() %></td>
+                                        <td class="text-muted small" style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="<%= rep.getContenido() %>">
+                                            <%= rep.getContenido() %>
+                                        </td>
+                                        <td class="text-center pe-4">
+                                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                                <form action="ServletReportes" method="GET" class="d-inline m-0 p-0">
+                                                    <input type="hidden" name="accion" value="cargarEditar">
+                                                    <input type="hidden" name="id" value="<%= rep.getIdReporte() %>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold text-nowrap">
+                                                        <i class="bi bi-pencil me-1"></i>Editar
+                                                    </button>
+                                                </form>
+
+                                                <form action="ServletReportes" method="POST" class="d-inline m-0 p-0">
+                                                    <input type="hidden" name="accion" value="eliminar">
+                                                    <input type="hidden" name="idReporte" value="<%= rep.getIdReporte() %>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-semibold text-nowrap" onclick="return confirm('¿Estás seguro de eliminar este reporte del archivo?');">
+                                                        <i class="bi bi-trash me-1"></i>Eliminar
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                     <% 
@@ -119,7 +155,7 @@
                                         } else { 
                                     %>
                                         <tr>
-                                            <td colspan="4" class="text-center py-4 text-muted fw-semibold">No hay reportes registrados en el sistema.</td>
+                                            <td colspan="4" class="text-center py-4 text-muted fw-semibold">No se encontraron reportes registrados.</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
